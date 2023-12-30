@@ -2,7 +2,7 @@
 
 A minature seventeen-component singleboard computer.
 
-[image](/design/finished-board.jpg)
+![image](/design/finished-board.jpg)
 
 _Preface_
 
