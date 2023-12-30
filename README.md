@@ -12,3 +12,6 @@ _Insistences_
 
 The ideal project should NOT be exploited into higher monetary platitudes simply because people love it. Rather, what open-source tools are the most trustworthy (free of manipulation by intellectual corruption) that will have any engineer who replicates this project have the same success in whatever the future time may be?
 
+#### Reference
+
+Refer to [this](https://jefftranter.blogspot.com/2019/01/a-6809-single-board-computer.html)
