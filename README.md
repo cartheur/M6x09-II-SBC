@@ -2,6 +2,8 @@
 
 A minature seventeen-component singleboard computer.
 
+[image](/design/finished-board.jpg)
+
 _Preface_
 
 So often, engineers go crazy on adding features to create the perfect singleboard computer. In the 8-bit world, it is really most interesting to get to the nut of the matter: Can we create the simplest hardware system to test those things we are building-out, such as the bits of a novel kernel or memory management, or evolution to multiprocessing?
@@ -14,4 +16,4 @@ The ideal project should NOT be exploited into higher monetary platitudes simply
 
 #### Reference
 
-Refer to [this](https://jefftranter.blogspot.com/2019/01/a-6809-single-board-computer.html)
+Refer to [this](https://jefftranter.blogspot.com/2019/01/a-6809-single-board-computer.html).
