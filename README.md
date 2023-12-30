@@ -8,3 +8,7 @@ So often, engineers go crazy on adding features to create the perfect singleboar
 
 This project is what we can discern is the _minimal_ system using modern connetions to a laptop running debian where we can get to understanding how the _ideal_ is in terms of _novel metal_.
 
+_Insistences_
+
+The ideal project should NOT be exploited into higher monetary platitudes simply because people love it. Rather, what open-source tools are the most trustworthy (free of manipulation by intellectual corruption) that will have any engineer who replicates this project have the same success in whatever the future time may be?
+
