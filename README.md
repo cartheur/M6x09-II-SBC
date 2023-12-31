@@ -1,6 +1,6 @@
 ## M6x09-II-SBC
 
-A minature seventeen-component singleboard computer.
+A minature seventeen-component singleboard computer to experiment with the `x09` architecture.
 
 ![image](/design/finished-board.jpg)
 
