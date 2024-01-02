@@ -4,6 +4,8 @@ A minature seventeen-component singleboard computer to experiment with the `x09`
 
 ![image](/design/finished-board.jpg)
 
+Picture change to set board.
+
 _Preface_
 
 So often, engineers go crazy on adding features to create the perfect singleboard computer. In the 8-bit world, it is really most interesting to get to the nut of the matter: Can we create the simplest hardware system to test those things we are building-out, such as the bits of a novel kernel or memory management, or evolution to multiprocessing?
