@@ -27,8 +27,8 @@ _Parts list_
 | ID | Name | Designator | Footprint | Quantity | Part Number | Manufacturer | Supplier | Supplier Part Number | Unit Price (EUR) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 10uF | C1 | CAP-D3.0XF1.5 | 1 | ECA-1VM100 | Panasonic | Mouser | 667-ECA-1VM100 | 0.167 |
-| 2 | 18pF | "C2-C3" | RAD-0.1 | 2 | K180J15C0GF5TL2 | Vishay | Mouser | 594-K180J15C0GF5TL2 | 0.214 |
-| 3 | 0.1uF | "C4-C5-C6-C7-C8" | RAD-0.1 | 5 | K104K15X7RH53H5G | Vishay | Mouser | 594-K104K15X7RH53H5G | 0.698 |
+| 2 | 18pF | C2-C3 | RAD-0.1 | 2 | K180J15C0GF5TL2 | Vishay | Mouser | 594-K180J15C0GF5TL2 | 0.214 |
+| 3 | 0.1uF | C4-C5-C6-C7-C8 | RAD-0.1 | 5 | K104K15X7RH53H5G | Vishay | Mouser | 594-K104K15X7RH53H5G | 0.698 |
 | 4 | 1N914 | D1 | DO-35 | 1 | 1N914 | Fairchild | Mouser | 512-1N914 | 0.093 |
 | 5 | USB POWER JUMPER | H1 | HDR-2X1/2.54 | 1 | 826629-2 | TE Connectivity | Mouser | 571-826629-2 | 0.316 |
 | 6 | EXPANSION HEADER | H2 | HDR-16X2/2.54 | 1 | 5-146257-8 | TE Connectivity | Mouser | 571-5-146257-8 | 2.25 |
