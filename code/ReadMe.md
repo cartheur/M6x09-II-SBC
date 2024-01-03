@@ -1,6 +1,7 @@
 ## M6x09 Salvage & Boneyard
 
-Details can be found [here](http://land-boards.com/blwiki/index.php?title=RetroComputers).
+* Details can be found [here](http://land-boards.com/blwiki/index.php?title=RetroComputers).
+* Compatible repo is [here](https://github.com/cartheur/SalvagedRetro/tree/master/6809)
 
 ### Background
 
