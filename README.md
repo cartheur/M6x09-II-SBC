@@ -46,5 +46,5 @@ _Parts list_
 
 #### Reference
 
-Refer to [this](https://jefftranter.blogspot.com/2019/01/a-6809-single-board-computer.html).
+Refer to [this](https://jefftranter.blogspot.com/2019/01/a-6809-single-board-computer.html). Encorporate this into here.
 EPROM programmer [software](https://drive.proton.me/urls/3ZPDKVPCFG#tx9o8VUVD5vE).
