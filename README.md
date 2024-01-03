@@ -2,9 +2,7 @@
 
 A minature seventeen-component singleboard computer to experiment with the `x09` architecture.
 
-![image](/design/finished-board.jpg)
-
-Picture change to set board.
+![image](/design/bare-board.jpg)
 
 _Preface_
 
