@@ -1,6 +1,6 @@
 ## M6x09-II-SBC
 
-A minature seventeen-component singleboard computer to experiment with the `x09` architecture.
+A minature seventeen-component singleboard computer to experiment with the `x09` architecture. The sister repository can be found [here](https://github.com/cartheur/M6x09-A).
 
 _Preface_
 
