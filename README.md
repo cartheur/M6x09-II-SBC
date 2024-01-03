@@ -2,6 +2,12 @@
 
 A minature seventeen-component singleboard computer to experiment with the `x09` architecture.
 
+The layout appears in this version
+
+![image](/design/Layout_M6809-II-SBC.png)
+
+Where the manufactured part came back (the unassembled version)
+
 ![image](/design/bare-board.jpg)
 
 _Preface_
