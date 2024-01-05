@@ -62,3 +62,8 @@ _Disadvantages_
 * Difficult programming: Developing software that can effectively utilize multiple computers can be challenging, and it requires specialized programming skills.
 * Synchronization issues: Multicomputer systems require synchronization between computers to ensure that tasks are executed correctly and efficiently, which can add complexity and overhead to the system.
 * Network latency: Multicomputer systems rely on a network to communicate between computers, and network latency can impact system performance
+
+### Documents references
+
+* Expired Patent [literature](https://patents.google.com/?inventor=Lawrence+S.+Mok)
+* Multicomputing [DSP](https://www.semanticscholar.org/paper/A-multicomputer-type-DSP-system-for-super-signal-Ono-Kanayama/ee09a9bf444c2bd962d704a834e61a0ef8cb44b4)
