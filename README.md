@@ -46,6 +46,10 @@ _Parts list_
 | 16 | 7.3728 MHz | X1 | OSC-49S-1 | 1 | ABL-7.3728MHZ-B2 | Abracon | Mouser | 815-ABL-7.3728-B2 | 0.307 |
 | 17 | 74LS00 | U5 | DIP14-300 | 1 | 1-2199298-3 | TE Connectivity | Mouser | 571-1-2199298-3 | 0.205 |
 
+### Project notes
+
+Board _alpha_ has been assembled awaiting inserting chips.
+
 #### Reference
 
 Refer to [this](https://jefftranter.blogspot.com/2019/01/a-6809-single-board-computer.html). Encorporate this into here.
