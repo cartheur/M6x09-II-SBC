@@ -20,7 +20,7 @@ Layout (v1.1)
 
 ![image](/design/Layout_M6809-II-SBC.png)
 
-The manufactured ouput (unassembled version)
+The manufactured ouput (unassembled version).
 
 ![image](/design/bare-board.jpg)
 
