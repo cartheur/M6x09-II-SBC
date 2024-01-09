@@ -48,7 +48,8 @@ _Parts list_
 
 ### Project notes
 
-Board _alpha_ has been assembled awaiting inserting chips.
+05.01.2024: Board _alpha_ has been assembled awaiting inserting chips.
+08.01.2024: Board _gamma_ has been assembled awaiting inserting chips.
 
 #### Reference
 
