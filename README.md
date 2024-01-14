@@ -2,6 +2,8 @@
 
 A minature seventeen-component singleboard computer to experiment with the `x09` architecture. The sister repository can be found [here](https://github.com/cartheur/M6x09-A).
 
+The (windows) terminal application to connect to this board via FTDI can be found [here](/serial/README.md).
+
 _Preface_
 
 So often, engineers go crazy on adding features to create the perfect singleboard computer. In the 8-bit world, it is really most interesting to get to the nut of the matter: Can we create the simplest hardware system to test those things we are building-out, such as the bits of a novel kernel or memory management, or evolution to multiprocessing?
@@ -18,7 +20,7 @@ Layout (v1.1)
 
 ![image](/design/Layout_M6809-II-SBC.png)
 
-The manufactured ouput (unassembled version)
+The manufactured ouput (unassembled version).
 
 ![image](/design/bare-board.jpg)
 
@@ -43,6 +45,11 @@ _Parts list_
 | 15 | 6xC09 | U4 | DIP40-600-Ladder | 1 | 1-2199299-5 | TE Connectivity | Mouser | 571-1-2199299-5 | 0.874 |
 | 16 | 7.3728 MHz | X1 | OSC-49S-1 | 1 | ABL-7.3728MHZ-B2 | Abracon | Mouser | 815-ABL-7.3728-B2 | 0.307 |
 | 17 | 74LS00 | U5 | DIP14-300 | 1 | 1-2199298-3 | TE Connectivity | Mouser | 571-1-2199298-3 | 0.205 |
+
+### Project notes
+
+05.01.2024: Board _alpha_ has been assembled awaiting inserting chips.
+08.01.2024: Board _gamma_ has been assembled awaiting inserting chips.
 
 #### Reference
 

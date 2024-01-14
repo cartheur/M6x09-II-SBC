@@ -1,0 +1,87 @@
+# SimplySerial
+
+## A serial terminal that runs as a Windows console application.
+
+This application is found [here](/serial/ss.exe)
+  
+### Description
+
+SimplySerial is a basic serial terminal that runs as a Windows console application.  It provides a quick way to connect to - and communicate with - serial devices through the Windows Command Prompt or PowerShell.  SimplySerial can be used directly from Command Prompt/PowerShell and should work with most devices that appear in Device Manager as "COMx".  It was, however, written specifically for
+use within a "terminal" window in [Visual Studio Code](https://code.visualstudio.com/) to provide serial communications with devices running [CircuitPython](https://circuitpython.org/).  Most of the testing and development of this application was done with this use case in mind.  
+
+### A Quick Note For CircuitPython Users
+
+If your primary interest in SimplySerial is for programming CircuitPython devices in Visual Studio Code, _I encourage you to check out Joe DeVivo's excellent VSCode extension_ in the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=joedevivo.vscode-circuitpython) or [On Github](https://github.com/joedevivo/vscode-circuitpython).  His extension has tons of awesome features that go well beyond the basic 'serial terminal' functionality provided by SimplySerial.  That being said, SimplySerial is still a handy little tool for quickly connecting to serial devices in a command prompt/powershell, for use in VSCode for non-CircuitPython devices, or for those who prefer its simplicity over the full-featured CircuitPython extension.
+
+### Requirements
+
+* Windows 7, 8, 8.1 or 10
+* .NET Framework 4.5 or newer
+
+_The required version of .NET framework is already included in Windows 8 and newer.  If you're running Windows 7, you may need to download and install it from Microsoft at https://dotnet.microsoft.com/download/dotnet-framework._
+
+
+### Using the program
+
+For CircuitPython users, type `ss` in a Command Prompt, PowerShell or VSCode Terminal Window and press `enter`.  That's it!
+
+By default, SimplySerial will attempt to identify and connect to a CircuitPython-capable board at 9600 baud, no parity, 8 data bits and 1 stop bit.  If no known boards are detected, it will default to the first available serial (COM) port.  If there are no COM ports available, it will wait until one shows up, then connect to it. 
+
+Once you're connected, you should see messages from the device on COMx appear on screen, and anything you type into Command Prompt/PowerShell will be sent to the device.  CircuitPython users can access the REPL using `CTRL-C` and exit the REPL using `CTRL-D`.
+
+You can exit SimplySerial any time by pressing `CTRL-X`.  
+
+If you have multiple COM ports, multiple CircuitPython devices connected, or need to use different communications settings, you will need to use the appropriate command-line arguments listed below:
+
+  `-h, --help` displays a list of valid command-line arguments
+
+  `-l, --list` displays a list of available COM ports  
+
+  `-c, --com` sets the desired COM port (ex. `-c:1` for COM1, `--com:22` for COM22)
+
+  `-b, --baud` sets the baud rate (ex. `-b:9600`, `--baud:115200`)
+
+  `-p, --parity` sets the parity option (ex. `-p:none`, `--parity:even`) 
+  
+  `-d, --databits` sets the number of data bits to use (ex. `-d:8`, `--databits:7`)
+
+  `-s, --stopbits` sets the number of stop bits to use (ex. `-s:1`, `--stopbits:1.5`)
+
+  `-a, --autoconnect` sets the desired auto-(re)connect behaviour (ex. `a:NONE`, `--autoconnect:ANY`)
+  
+  `-l, --log` Logs all output to the specified file.  (ex. `-l:ss.log`, `-log:"C:\Users\My Name\my log.txt"`)
+            
+  `--logmode` Instructs SimplySerial to either `APPEND` to an existing log file, or `OVERWRITE` an existing log file.  In either case, if the specified log file does not exist, it will be created.  If neither option is specified, `OVERWRITE` is assumed.  (ex. `--logmode:APPEND`)
+
+  `-q, --quiet` prevents any application messages (connection banner, error messages, etc.) from printing out to the console.
+
+If you wanted to connect to a device on COM17 at 115200 baud, you would use the command `ss -c:17 -b:115200`, or if you really enjoy typing `ss --com:17 --baud:115200`.
+
+
+### Auto-(re)connect functionality
+
+  SimplySerial's `autoconnect` option can be used to determine if and how to connect/reconnect to a device.  These options function as follows:
+  
+  `--autoconnect:ONE` is the default mode of operation.  If a COM port was specified using the `--com` option, SimplySerial will attempt to connect to the specified port, otherwise it will connect to the first available COM port (giving preference to devices known to be CircuitPython-capable).  In either case, the program will wait until the/a COM port is available, and connect to it when it is.  If the device becomes unavailable at any point (because it was disconnected, etc.), SimplySerial will wait until that specific COM port becomes available again, regardless of any other COM ports that may or may not be available.
+  
+  `--autoconnect:ANY` is similar to `ONE`, except that when the connected port becomes unavailable, SimplySerial will attempt to connect to any other available port.  This option is useful if you only ever have one COM port available at a time, but can be problematic if you have multiple COM ports connected, or if you have a built-in COM port that is always available.
+  
+  `--autoconnect:NONE` prevents SimplySerial from waiting for devices and automatically re-connecting.
+  
+
+### Using SimplySerial in Visual Studio Code (VSCode)
+
+  In a standard installation of VSCode, opening a "terminal" gets you a Command Prompt or PowerShell window embedded in the VSCode interface.  SimplySerial works exactly the same within this embedded window as it does in a normal Command Prompt or PowerShell, which means using SimplySerial within VSCode is as easy as opening a terminal window via the menu bar (`Terminal > New Terminal`) or shortcut key, typing `ss` and pressing enter.
+
+  If you want to make things even simpler, or if you need to use a bunch of command-line arguments and don't want to enter them every time (**and you don't use the terminal window in Visual Studio Code for anything else**) you can have VSCode launch SimplySerial directly whenever you open a terminal window by changing the `terminal.integrated.shell.windows` setting to point to `ss.exe` + any arguments you need to add.  This works well, but will prevent you from having multiple VSCode terminal windows open, as only one application can connect to any given serial port at a given time.
+
+### Using SimplySerial with Windows Terminal
+
+[Windows Terminal](https://docs.microsoft.com/en-us/windows/terminal/) is a tabbed alternative to the command shell that Microsoft has developed as an open source project.  It is easy to setup SimplySerial as a new terminal profile; you just need to create a new profile in the settings GUI and specify the ss command line.  If you have problems, make sure that the SimplySerial executable is in your system path.
+
+If you're directly editing the settings.json, the profile section will look like the code below, but with your specific command-line parameters.
+
+    {
+        "commandline": "ss -com:4 -baud:115200",
+        "name": "COM4"
+    }
