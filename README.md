@@ -49,7 +49,10 @@ _Parts list_
 ### Project notes
 
 05.01.2024: Board _alpha_ has been assembled awaiting inserting chips.
+
 08.01.2024: Board _gamma_ has been assembled awaiting inserting chips.
+
+13.01.2024: Dream confirms this is the project to be focusing all attention upon.
 
 #### Reference
 
