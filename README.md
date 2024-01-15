@@ -54,6 +54,10 @@ _Parts list_
 
 13.01.2024: Dream confirms this is the project to be focusing all attention upon.
 
+15.01.2024: Beginning the final assembly of _alpha_.
+
+
+
 #### Reference
 
 Refer to [this](https://jefftranter.blogspot.com/2019/01/a-6809-single-board-computer.html). Encorporate this into here.
