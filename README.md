@@ -4,6 +4,16 @@ A minature seventeen-component singleboard computer to experiment with the `x09`
 
 The (windows) terminal application to connect to this board via FTDI can be found [here](/serial/README.md).
 
+### Working Readmes
+
+For the active Linux-side workflow, start here:
+
+- [Linux terminal bring-up](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/terminal/README.md)
+- [ROM build and GTEK 7228 burn flow](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/programming/README.md)
+- [ASSIST09 source tree](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/README.md)
+
+The current ROM monitor source is [src/m6809/assist09.asm](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/assist09.asm).
+
 _Preface_
 
 So often, engineers go crazy on adding features to create the perfect singleboard computer. In the 8-bit world, it is really most interesting to get to the nut of the matter: Can we create the simplest hardware system to test those things we are building-out, such as the bits of a novel kernel or memory management, or evolution to multiprocessing?

@@ -98,13 +98,16 @@ The recommended loop is:
 2. Assemble code on Linux.
 3. Send Motorola S-records over serial into RAM.
 4. Run and debug from RAM.
-5. Burn a new EPROM image only when a RAM build is stable enough to preserve.
+5. Burn a new EPROM image with the GTEK 7228 only when a RAM build is stable enough to preserve.
 
 This fits the repo's existing software notes in [code/ReadMe.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/code/ReadMe.md), including:
 
 - ASSIST09 on a 6850 ACIA
 - `LOAD` and `PUNCH` support
 - BASIC reachable with `G D000`
+
+For build details, see [src/m6809/README.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/README.md).
+For the ROM-burning step, see [programming/README.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/programming/README.md).
 
 ## Sending Files
 
@@ -125,6 +128,8 @@ If uploads stall:
 
 - Board overview: [README.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/README.md)
 - Software workflow notes: [code/ReadMe.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/code/ReadMe.md)
+- Monitor source and build notes: [src/m6809/README.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/README.md)
+- AS9 source and Makefile: [src/as9/Makefile](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/as9/Makefile)
 - Layout image: [design/Layout_M6809-II-SBC.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/design/Layout_M6809-II-SBC.png)
 - PCB net evidence: [design/PCB_6x09-II.json](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/design/PCB_6x09-II.json)
 
