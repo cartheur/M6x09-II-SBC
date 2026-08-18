@@ -22,5 +22,5 @@ You will find a file `as9n.c` in the source archive. This is an alternative to `
 
 ### CLASSIC 6809 MATERIAL
 
-The official Motorola M6809 assembler as9 is to be used to assemble the famous assist09.asm Motorola monitor program and the forth9.asm 6809 figforth implementation, that you can download `m6809src.zip`, in MS-DOS text format.
+The official Motorola M6809 assembler as9 is to be used to assemble the famous assist09.asm Motorola monitor program and the forth09.asm 6809 figforth implementation, that you can download `m6809src.zip`, in MS-DOS text format.
 It is also used for the 6809 version of [ciforth](https://home.hccnet.nl/a.w.m.van.der.horst/ciforth.html).

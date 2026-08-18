@@ -1,0 +1,6 @@
+# M6809 build artifacts
+src/m6809/*.bin
+src/m6809/*.lst
+src/m6809/*.s19
+src/m6809/*.sym
+src/m6809/*.crf

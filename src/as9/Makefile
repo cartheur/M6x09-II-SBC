@@ -26,7 +26,7 @@ as9.tgz : $(SRCC) $(SRCH) as9 changes.doc Makefile; tar cfz $@ $^
 
 as9.zip : $(SRCC) $(SRCH) as9n.c as9 as9.exe as9_changes.txt Makefile; zip $@ $^
 
-m6809src.zip : assist09.asm forth9.asm ; zip $@ $^
+m6809src.zip : assist09.asm forth09.asm ; zip $@ $^
 
 testrom :  as9
 	as9 rom.asm -l c s bin s19 cre
@@ -40,10 +40,10 @@ testassist09 :  as9
 	diff -b -B assist09.bin results/assist09.bin
 	diff -b -B assist09.s19 results/assist09.s19
 
-testforth9 :  as9
-	as9 forth9.asm -l c s bin s19 cre
-	diff -b -B forth9.lst results/forth9.lst
-	diff -b -B forth9.bin results/forth9.bin
-	diff -b -B forth9.s19 results/forth9.s19
+testforth09 :  as9
+	as9 forth09.asm -l c s bin s19 cre
+	diff -b -B forth09.lst results/forth09.lst
+	diff -b -B forth09.bin results/forth09.bin
+	diff -b -B forth09.s19 results/forth09.s19
 
-test : testrom testassist09 testforth9
+test : testrom testassist09 testforth09

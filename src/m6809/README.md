@@ -6,7 +6,7 @@ This folder contains the checked-in 6809 source tree used as the software starti
 
 - [assist09.asm](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/assist09.asm)
   - Motorola ASSIST09 monitor, adapted for the 6850 ACIA on this board
-- [forth9.asm](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/forth9.asm)
+- [forth09.asm](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/forth09.asm)
   - 6809 fig-Forth source
 - [Makefile](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/Makefile)
   - convenience targets for building ASSIST09 and Forth artifacts
@@ -65,7 +65,7 @@ Expected ASSIST09 artifacts:
 You can also build Forth with:
 
 ```bash
-make forth9
+make forth09
 ```
 
 ## Development Workflow
