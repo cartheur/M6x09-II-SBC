@@ -59,10 +59,16 @@ The initial ASSIST09 monitor is the exception to the usual "test in RAM first" r
 
 1. Confirm the marking on the EPROM and select that exact device in the Batronix software. Do not select `27C128` merely because it is the intended part; match the chip actually in the programmer.
 2. Read the installed or donor EPROM and save an unmodified backup before erasing or programming it.
-3. Resolve the ROM-address placement before loading a file into the programmer. ASSIST09 is a 2,048-byte image mapped by the CPU at `$F800-$FFFF`; a `27C128` physically stores 16 KiB. The board's address decode determines whether the 2 KiB image is repeated, placed at a specific device offset, or needs a padded 16 KiB programmer image.
-4. Do not program `assist09.bin` until the placement in step 3 has been confirmed from the board schematic, address-decoding logic, or a known-good EPROM read.
+3. Build the 16 KiB `27C128` programmer image:
+
+   ```bash
+   make -C src/assist-09 programmer-image
+   ```
+
+   This creates `src/assist-09/assist09-27c128.bin`. The board maps ROM at `$C000-$FFFF`, so the file is filled with `0xFF` from `$C000-$F7FF` and places the 2,048-byte ASSIST09 image at EPROM offset `$3800`, corresponding to CPU addresses `$F800-$FFFF`.
+4. Load `src/assist-09/assist09-27c128.bin` into the Batronix software. Do not load the raw 2 KiB `assist09.bin` as the complete image for a `27C128`.
 5. If using a blank or erased replacement, run the Batronix blank check.
-6. Load the confirmed programmer image, program the EPROM, and run the Batronix verify operation.
+6. Program the 16 KiB image, then run the Batronix verify operation.
 7. Label the EPROM with `assist09`, the date, image checksum, and device type.
 8. Install the EPROM with power removed, check its orientation, then power the board and continue with the terminal acceptance test below.
 
@@ -177,7 +183,7 @@ Use the Batronix Barlino II 32P as:
 
 1. Build in `src/assist-09`.
 2. Test over serial in RAM, typically using the generated `.s19` file.
-3. Program and verify the ASSIST09 EPROM after the image and device placement are trusted.
+3. Build, program, and verify the 16 KiB `assist09-27c128.bin` EPROM image.
 4. Run the terminal RAM smoke test against the newly programmed monitor.
 5. Copy the final preserved `.bin` ROM image into `roms/`.
 6. Add the checksum and short milestone note.

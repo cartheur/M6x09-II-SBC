@@ -35,9 +35,9 @@ scripts/verify-assist09-image.sh
 
 The image is not yet a hardware-verified ROM milestone. Complete and record these observations on the target board:
 
-1. Confirm the exact EPROM part and its placement for the 2 KiB `$F800-$FFFF` ASSIST09 image before programming. A 16 KiB `27C128` may require a padded image or a specific device offset, depending on board address decoding.
+1. Build `src/assist-09/assist09-27c128.bin` with `make -C src/assist-09 programmer-image`. The board maps its 16 KiB ROM at `$C000-$FFFF`; this image fills `$C000-$F7FF` with `0xFF` and places ASSIST09 at `$F800-$FFFF`.
 2. Read and save a backup of the existing EPROM, then blank-check the replacement if applicable.
-3. Program the confirmed image with the Batronix Barlino II 32P and complete its verify operation.
+3. Program `assist09-27c128.bin` with the Batronix Barlino II 32P and complete its verify operation.
 4. Reset the M6x09-II-SBC and record the ASSIST09 banner and `>` prompt in the Tcl terminal.
 5. Build the RAM test with `make -C src/assist-09 smoke`.
 6. At the monitor prompt, enter `L`, send `src/assist-09/assist09-smoke.s19`, then enter `G 1000`.
