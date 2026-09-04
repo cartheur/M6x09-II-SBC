@@ -1,0 +1,26 @@
+#
+#      ---===== __o
+#             _ \<,_
+# ___________(_)/ (_)__________________________________________________________
+#
+# date: 2011-01-03
+#
+# goal: grant read/write access for batronix-devices to all users via udev
+#
+# developer: Dipl.-Ing.(FH) Jan Ruhlaender <j.ruhlaender@batronix.com>
+# _____________________________________________________________________________
+#
+# copyright (c) 2011-2026 Batronix, Dipl.-Ing.(FH) Andre Bauer
+# _____________________________________________________________________________
+#
+# Revisions:
+#
+#    Replaced obsolete udev parameters BUS and SYSFS
+#    to avoid unattractive boot warnings.
+#    --We 16 Feb 2011 11:51:00 CET - <j.ruhlaender@batronix.com>
+#
+#    Replaced operator "=" with ":=" to prevent any further mode changes
+#    through other udev rules. Thanks to Mr. Brisindi for the reference.
+#    --Th 26 March 2015 08:07:00 CET - <j.ruhlaender@batronix.com>
+#
+SUBSYSTEM=="usb", ATTR{idVendor}=="19b2", MODE:="0666", TAG+="uaccess"
