@@ -4,8 +4,7 @@ This folder contains the Linux-side terminal workflow for the M6x09-II SBC. The 
 
 ## What This Uses
 
-- [m6x09-terminal.tcl](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/terminal/m6x09-terminal.tcl) as the host terminal
-- `P1` as the board's 6-pin FTDI-style serial header in [design/Layout_M6809-II-SBC.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/design/Layout_M6809-II-SBC.png)
+- [m6x09-terminal.tcl](m6x09-terminal.tcl) as the host terminal
 - `H1` as the optional USB-power jumper between `P1_3` and board `VCC`
 - ASSIST09 in ROM for prompt, inspection, S-record load, and RAM execution
 
@@ -35,7 +34,7 @@ The script is tuned for prompt-driven, line-paced uploads. It waits for a carria
 
 ## P1 Wiring
 
-`P1` is a 1x6 FTDI-style header. From the PCB netlist in [design/PCB_6x09-II.json](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/design/PCB_6x09-II.json):
+`P1` is a 1x6 FTDI-style header with the following board connections:
 
 - `P1` pin 1 = `GND`
 - `P1` pin 3 = `P1_3`
@@ -79,14 +78,14 @@ Useful first commands:
 ```text
 R
 D 1000 20
-G D000
 ```
 
 Expected behavior:
 
 - `R` shows registers
 - `D` displays memory
-- `G D000` jumps from ASSIST09 into BASIC, as described in [code/ReadMe.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/code/ReadMe.md)
+
+Use the acceptance sequence in [roms/README.md](../roms/README.md) to load `assist09-smoke.s19` at `$1000` and prove serial loading and RAM execution. `G D000` is only relevant after a separately validated combined BASIC ROM is installed.
 
 ## Programming Strategy
 
@@ -98,16 +97,9 @@ The recommended loop is:
 2. Assemble code on Linux.
 3. Send Motorola S-records over serial into RAM.
 4. Run and debug from RAM.
-5. Burn a new EPROM image with the GTEK 7228 only when a RAM build is stable enough to preserve.
+5. Burn a new EPROM image with the Batronix Barlino II 32P only when a RAM build is stable enough to preserve.
 
-This fits the repo's existing software notes in [code/ReadMe.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/code/ReadMe.md), including:
-
-- ASSIST09 on a 6850 ACIA
-- `LOAD` and `PUNCH` support
-- BASIC reachable with `G D000`
-
-For build details, see [src/m6809/README.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/README.md).
-For the ROM-burning step, see [programming/README.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/programming/README.md).
+For the ASSIST09 build and ROM acceptance sequence, see [roms/README.md](../roms/README.md).
 
 ## Sending Files
 
@@ -126,12 +118,9 @@ If uploads stall:
 
 ## Reference Files In This Repo
 
-- Board overview: [README.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/README.md)
-- Software workflow notes: [code/ReadMe.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/code/ReadMe.md)
-- Monitor source and build notes: [src/m6809/README.md](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/README.md)
-- AS9 source and Makefile: [src/as9/Makefile](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/as9/Makefile)
-- Layout image: [design/Layout_M6809-II-SBC.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/design/Layout_M6809-II-SBC.png)
-- PCB net evidence: [design/PCB_6x09-II.json](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/design/PCB_6x09-II.json)
+- Board overview: [README.md](../README.md)
+- Monitor source and build notes: [src/README.md](../src/README.md)
+- AS9 source and Makefile: [src/assembler/Makefile](../src/assembler/Makefile)
 
 ## External Reference Set
 

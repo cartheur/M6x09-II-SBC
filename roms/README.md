@@ -4,10 +4,10 @@ This folder is for ROM images that are worth preserving in git and for documenti
 
 The recommended development rhythm is:
 
-1. Build or update the ROM image on Linux.
-2. Test new code in RAM first, typically via serial using the generated S-record.
-3. Burn EPROM with the Batronix Barlino II 32P only after the image is stable.
-4. Preserve only milestone ROMs in this folder.
+1. Build and verify the ASSIST09 ROM baseline on Linux.
+2. Prove the serial loader with the ASSIST09 RAM smoke test.
+3. Burn EPROM with the Batronix Barlino II 32P only after both gates pass.
+4. Preserve the verified milestone ROM and test record in this folder.
 
 ## Source Layout
 
@@ -18,18 +18,17 @@ The recommended development rhythm is:
 
 ## Build ASSIST09 On Linux
 
-From the repository root, build the assembler:
+From the repository root, build the assembler and ROM image:
 
 ```bash
-cd src/assembler
-make as9
+make -C src/assembler as9
+make -C src/assist-09
 ```
 
-Assemble ASSIST09:
+Verify a clean-room rebuild before programming hardware:
 
 ```bash
-cd src/assist-09
-../assembler/as9 assist09.asm -l c s bin s19 cre now
+scripts/verify-assist09-image.sh
 ```
 
 That should produce at least:
@@ -44,6 +43,33 @@ The source itself confirms the intended ROM base and ACIA address:
 - `ACIA EQU $BE00`
 
 Those values are in the ASSIST09 [source](../src/assist-09/assist09.asm).
+
+The verifier requires all of the following:
+
+- a 2,048-byte image
+- S-record data beginning at `$F800` and ending at `$FFFF`
+- reset vector `$F837`
+- a byte-for-byte match to the checked-in `assist09.bin` baseline
+
+fig-Forth is intentionally outside this workflow until its `$E000-$FFFF` ROM and `$C000-$DFFF` RAM assumptions have been adapted to this board.
+
+## Prove The Terminal Workflow
+
+Build the RAM smoke-test S-record:
+
+```bash
+make -C src/assist-09 smoke
+```
+
+With a known-good ASSIST09 EPROM installed and the terminal connected, use this acceptance sequence:
+
+1. Start the terminal as described in [terminal/README.md](../terminal/README.md), reset the board, and record the `ASSIST09` banner and `>` prompt.
+2. At the prompt, enter `L` and press Enter.
+3. Use `File -> Send...` to transmit `src/assist-09/assist09-smoke.s19`.
+4. Wait for the prompt to return without an error, then enter `G 1000`.
+5. Record the exact output: `ASSIST09 RAM SMOKE TEST PASSED`, followed by the monitor prompt.
+
+Do not label a ROM image stable until this sequence has been recorded for the specific board, EPROM, serial adapter, and terminal settings used.
 
 ## Use RAM As The Fast Loop
 

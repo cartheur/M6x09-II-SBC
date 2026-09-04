@@ -8,8 +8,10 @@ This folder contains the checked-in 6809 source tree used as the software starti
   - Motorola ASSIST09 monitor, adapted for the 6850 ACIA on this board
 - [forth09.asm](forth-09/forth09.asm)
   - 6809 fig-Forth source
-- [Makefile](forth-09/Makefile)
-  - convenience targets for building ASSIST09 and Forth artifacts
+- [ASSIST09 Makefile](assist-09/Makefile)
+  - the validated ROM baseline and RAM smoke-test build targets
+- [Forth Makefile](forth-09/Makefile)
+  - a separate, provisional Forth build
 
 ## Why ASSIST09 Matters Here
 
@@ -39,21 +41,20 @@ Those values are defined directly in [assist09.asm](assist-09/assist09.asm).
 Build the assembler first:
 
 ```bash
-cd src/assembler
-make as9
+make -C src/assembler as9
 ```
 
-Then build ASSIST09:
+Then build and verify ASSIST09:
 
 ```bash
-cd ../forth-09
-make assist09
+make -C src/assist-09
+scripts/verify-assist09-image.sh
 ```
 
-Or just use the default target:
+Build the terminal smoke-test S-record with:
 
 ```bash
-make
+make -C src/assist-09 smoke
 ```
 
 Expected ASSIST09 artifacts:
@@ -62,10 +63,10 @@ Expected ASSIST09 artifacts:
 - `assist09.lst`
 - `assist09.s19`
 
-You can also build Forth with:
+Forth is not part of the ROM baseline: it currently assumes a different `$E000-$FFFF` ROM and `$C000-$DFFF` RAM map. Build it only for separate investigation:
 
 ```bash
-make forth09
+make -C src/forth-09
 ```
 
 ## Development Workflow
@@ -101,11 +102,11 @@ These sources were carried forward from earlier salvage work around a simple 680
 The older background writeup was valuable historically, but the practical working guidance now lives in:
 
 - [terminal/README.md](../terminal/README.md)
-- [programming/README.md](../programming/README.md)
+- [roms/README.md](../roms/README.md)
 
 ## References
 
-- AS9 assembler notes: [src/as9.md](as9.md)
+- AS9 assembler notes: [as9.md](as9.md)
 - AS9 source: [src/assembler](assembler/)
 - Earlier project background: http://land-boards.com/blwiki/index.php?title=RetroComputers
 - Related salvage repo: https://github.com/cartheur/SalvagedRetro/tree/master/6809

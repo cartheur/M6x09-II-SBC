@@ -1,6 +1,11 @@
 # M6809 build artifacts
-src/m6809/*.bin
-src/m6809/*.lst
-src/m6809/*.s19
-src/m6809/*.sym
-src/m6809/*.crf
+src/assist-09/*.bin
+src/assist-09/*.lst
+src/assist-09/*.s19
+src/assist-09/*.sym
+src/assist-09/*.crf
+src/forth-09/*.bin
+src/forth-09/*.lst
+src/forth-09/*.s19
+src/forth-09/*.sym
+src/forth-09/*.crf
