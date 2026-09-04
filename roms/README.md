@@ -5,8 +5,8 @@ This folder is for ROM images that are worth preserving in git and for documenti
 The recommended development rhythm is:
 
 1. Build and verify the ASSIST09 ROM baseline on Linux.
-2. Prove the serial loader with the ASSIST09 RAM smoke test.
-3. Burn EPROM with the Batronix Barlino II 32P only after both gates pass.
+2. Program and verify the ASSIST09 EPROM with the Batronix Barlino II 32P.
+3. Prove the programmed monitor and serial loader with the ASSIST09 RAM smoke test.
 4. Preserve the verified milestone ROM and test record in this folder.
 
 ## Source Layout
@@ -53,6 +53,19 @@ The verifier requires all of the following:
 
 fig-Forth is intentionally outside this workflow until its `$E000-$FFFF` ROM and `$C000-$DFFF` RAM assumptions have been adapted to this board.
 
+## Program The ASSIST09 EPROM
+
+The initial ASSIST09 monitor is the exception to the usual "test in RAM first" rule: it must be present in EPROM before it can load the RAM smoke test. Program it only after the host verifier passes.
+
+1. Confirm the marking on the EPROM and select that exact device in the Batronix software. Do not select `27C128` merely because it is the intended part; match the chip actually in the programmer.
+2. Read the installed or donor EPROM and save an unmodified backup before erasing or programming it.
+3. Resolve the ROM-address placement before loading a file into the programmer. ASSIST09 is a 2,048-byte image mapped by the CPU at `$F800-$FFFF`; a `27C128` physically stores 16 KiB. The board's address decode determines whether the 2 KiB image is repeated, placed at a specific device offset, or needs a padded 16 KiB programmer image.
+4. Do not program `assist09.bin` until the placement in step 3 has been confirmed from the board schematic, address-decoding logic, or a known-good EPROM read.
+5. If using a blank or erased replacement, run the Batronix blank check.
+6. Load the confirmed programmer image, program the EPROM, and run the Batronix verify operation.
+7. Label the EPROM with `assist09`, the date, image checksum, and device type.
+8. Install the EPROM with power removed, check its orientation, then power the board and continue with the terminal acceptance test below.
+
 ## Prove The Terminal Workflow
 
 Build the RAM smoke-test S-record:
@@ -61,7 +74,7 @@ Build the RAM smoke-test S-record:
 make -C src/assist-09 smoke
 ```
 
-With a known-good ASSIST09 EPROM installed and the terminal connected, use this acceptance sequence:
+With the newly programmed ASSIST09 EPROM installed and the terminal connected, use this acceptance sequence:
 
 1. Start the terminal as described in [terminal/README.md](../terminal/README.md), reset the board, and record the `ASSIST09` banner and `>` prompt.
 2. At the prompt, enter `L` and press Enter.
@@ -69,7 +82,7 @@ With a known-good ASSIST09 EPROM installed and the terminal connected, use this 
 4. Wait for the prompt to return without an error, then enter `G 1000`.
 5. Record the exact output: `ASSIST09 RAM SMOKE TEST PASSED`, followed by the monitor prompt.
 
-Do not label a ROM image stable until this sequence has been recorded for the specific board, EPROM, serial adapter, and terminal settings used.
+Do not label a ROM image stable until the Batronix verification and this sequence have both been recorded for the specific board, EPROM, serial adapter, and terminal settings used.
 
 ## Use RAM As The Fast Loop
 
@@ -83,20 +96,6 @@ Use ASSIST09 as the stable ROM monitor, then:
 4. Promote only stable milestones into EPROM.
 
 This keeps the programmer in the outer loop where it belongs.
-
-## Burn EPROM With The Batronix Barlino II 32P
-
-Use the programmer only after you already trust the image in RAM. A safe sequence is:
-
-1. Build `assist09.bin` or your combined ROM image.
-2. Read the existing EPROM first and save a backup.
-3. Select the exact EPROM device type in the Batronix software.
-4. Blank-check the replacement EPROM.
-5. Program the image.
-6. Verify after programming.
-7. Label the part with image name and date.
-
-If the target is still a `27C128` or similar device, make sure the Batronix device selection matches the exact chip family you are actually inserting.
 
 ## What Belongs Here
 
@@ -178,8 +177,9 @@ Use the Batronix Barlino II 32P as:
 
 1. Build in `src/assist-09`.
 2. Test over serial in RAM, typically using the generated `.s19` file.
-3. Program EPROM with the Batronix Barlino II 32P only after the image is trusted.
-4. Copy the final preserved `.bin` ROM image into `roms/`.
-5. Add the checksum and short milestone note.
+3. Program and verify the ASSIST09 EPROM after the image and device placement are trusted.
+4. Run the terminal RAM smoke test against the newly programmed monitor.
+5. Copy the final preserved `.bin` ROM image into `roms/`.
+6. Add the checksum and short milestone note.
 
 This keeps the main source tree clean while still preserving important ROM history.
