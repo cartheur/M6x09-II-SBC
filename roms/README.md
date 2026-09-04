@@ -12,6 +12,7 @@ The recommended development rhythm is:
 ## Source Layout
 
 - Board [memory map](MEMORY-MAP.md)
+- Next [Forth port process](NEXT-FORTH-BUILD.md)
 - ASSIST09 [source](../src/assist-09/assist09.asm)
 - Source [notes](../src/README.md)
 - AS9 assembler [source](../src/assembler)
@@ -50,7 +51,7 @@ The verifier requires all of the following:
 - a 2,048-byte image
 - S-record data beginning at `$F800` and ending at `$FFFF`
 - reset vector `$F837`
-- a byte-for-byte match to the checked-in `assist09.bin` baseline
+- a byte-for-byte match to the final 2 KiB of the checked-in `roms/assist09-27c128.bin` baseline
 
 fig-Forth is intentionally outside this workflow until its `$E000-$FFFF` ROM and `$C000-$DFFF` RAM assumptions have been adapted to this board.
 

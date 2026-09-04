@@ -4,7 +4,7 @@ set -euo pipefail
 repo_root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 assembler="$repo_root/src/assembler/as9"
 source_file="$repo_root/src/assist-09/assist09.asm"
-reference_image="$repo_root/src/assist-09/assist09.bin"
+reference_image="$repo_root/roms/assist09-27c128.bin"
 build_dir=$(mktemp -d "${TMPDIR:-/tmp}/assist09-build.XXXXXX")
 
 trap 'rm -rf -- "$build_dir"' EXIT
@@ -28,7 +28,7 @@ test "$image_size" -eq 2048
 test "$first_record" = F800
 test "$last_record" = FFF0
 test "$reset_vector" = f837
-cmp -s "$image" "$reference_image"
+tail -c 2048 "$reference_image" | cmp -s - "$image"
 
 printf 'ASSIST09 image verified: 2048 bytes, $F800-$FFFF, reset vector $F837.\n'
-printf 'Rebuild matches src/assist-09/assist09.bin.\n'
+printf 'Rebuild matches the ASSIST09 portion of roms/assist09-27c128.bin.\n'

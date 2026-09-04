@@ -15,7 +15,7 @@ This record is the first output of the M6x09-II-SBC ROM workflow. It establishes
 
 ## Host Verification Result
 
-The clean-room AS9 rebuild completed successfully and matched the checked-in monitor image byte for byte.
+The clean-room AS9 rebuild completed successfully and matched the final 2 KiB of the checked-in `roms/assist09-27c128.bin` programmer image byte for byte.
 
 | Check | Result |
 | --- | --- |
