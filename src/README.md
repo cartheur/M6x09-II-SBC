@@ -39,14 +39,14 @@ Those values are defined directly in [assist09.asm](assist-09/assist09.asm).
 Build the assembler first:
 
 ```bash
-cd src/as9
+cd src/assembler
 make as9
 ```
 
 Then build ASSIST09:
 
 ```bash
-cd ../m6809
+cd ../forth-09
 make assist09
 ```
 
@@ -76,7 +76,7 @@ The intended workflow for this repo is:
 2. Bring the board up over the FTDI-style serial header.
 3. Assemble code on Linux.
 4. Load S-records into RAM over serial.
-5. Burn EPROM with the GTEK 7228 only when the image is stable.
+5. Burn EPROM with the Batronix Barlino II 32P only when the image is stable.
 
 That keeps ROM as the recovery layer and RAM as the fast iteration layer.
 

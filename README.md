@@ -8,11 +8,11 @@ The (windows) terminal application to connect to this board via FTDI can be foun
 
 For the active Linux-side workflow, start here:
 
-- [Linux terminal bring-up](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/terminal/README.md)
-- [ROM build and GTEK 7228 burn flow](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/programming/README.md)
-- [ASSIST09 source tree](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/README.md)
+- [Linux terminal bring-up](terminal/README.md)
+- [ROM build and Batronix Barlino II 32P burn flow](roms/README.md)
+- [ASSIST09 source tree](src/README.md)
 
-The current ROM monitor source is [src/m6809/assist09.asm](/home/cartheur/ame/aiventure/aiventure-github/cartheur/M6x09-II-SBC/src/m6809/assist09.asm).
+The current ROM monitor source is [ASSIST09 source](src/assist-09/assist09.asm).
 
 _Preface_
 
