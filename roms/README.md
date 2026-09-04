@@ -13,6 +13,7 @@ The recommended development rhythm is:
 
 - Board [memory map](MEMORY-MAP.md)
 - Next [Forth port process](NEXT-FORTH-BUILD.md)
+- Next-session board [debugging checklist](NEXT-SESSION-DEBUGGING.md)
 - ASSIST09 [source](../src/assist-09/assist09.asm)
 - Source [notes](../src/README.md)
 - AS9 assembler [source](../src/assembler)
