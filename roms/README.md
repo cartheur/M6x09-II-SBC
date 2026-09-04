@@ -11,6 +11,7 @@ The recommended development rhythm is:
 
 ## Source Layout
 
+- Board [memory map](MEMORY-MAP.md)
 - ASSIST09 [source](../src/assist-09/assist09.asm)
 - Source [notes](../src/README.md)
 - AS9 assembler [source](../src/assembler)
@@ -65,8 +66,8 @@ The initial ASSIST09 monitor is the exception to the usual "test in RAM first" r
    make -C src/assist-09 programmer-image
    ```
 
-   This creates `src/assist-09/assist09-27c128.bin`. The board maps ROM at `$C000-$FFFF`, so the file is filled with `0xFF` from `$C000-$F7FF` and places the 2,048-byte ASSIST09 image at EPROM offset `$3800`, corresponding to CPU addresses `$F800-$FFFF`.
-4. Load `src/assist-09/assist09-27c128.bin` into the Batronix software. Do not load the raw 2 KiB `assist09.bin` as the complete image for a `27C128`.
+   This creates `roms/assist09-27c128.bin` and `roms/assist09-27c128.bin.sha256`. The board maps ROM at `$C000-$FFFF`, so the file is filled with `0xFF` from `$C000-$F7FF` and places the 2,048-byte ASSIST09 image at EPROM offset `$3800`, corresponding to CPU addresses `$F800-$FFFF`.
+4. Load `roms/assist09-27c128.bin` into the Batronix software. Do not load the raw 2 KiB `assist09.bin` as the complete image for a `27C128`.
 5. If using a blank or erased replacement, run the Batronix blank check.
 6. Program the 16 KiB image, then run the Batronix verify operation.
 7. Label the EPROM with `assist09`, the date, image checksum, and device type.
