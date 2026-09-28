@@ -64,13 +64,8 @@ _Parts list_
 
 13.01.2024: Dream confirms this is the project to be focusing all attention upon.
 
-15.01.2024: Beginning the final assembly of _alpha_.
+15.01.2024: Beginning the final assembly of _alpha_, then will continue to the assembly of _gamma_. Printed labels affixed to each.
 
 26.09.2026: Actively debugging the board.
 
 
-
-#### Reference
-
-Refer to [this](https://jefftranter.blogspot.com/2019/01/a-6809-single-board-computer.html). Encorporate this into here.
-EPROM programmer [software](https://drive.proton.me/urls/3ZPDKVPCFG#tx9o8VUVD5vE).
