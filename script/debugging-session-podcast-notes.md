@@ -72,15 +72,24 @@ With reset released, H2 pin 9 (`E`) measured 1.8431 MHz, exactly the expected CP
 
 The diagnostic sequence was deliberately incremental: correct the FTDI supply jumper, scope reset over a long enough interval to see its RC release, verify E-clock, then observe the lower address bus. Each step removed one category of failure without claiming serial success. The next instrument point is ACIA TX—U1 pin 6 / P1 pin 5—after the reset-release delay. It should idle high and show 115200-baud traffic during the ASSIST09 banner. A continued idle line would move the investigation to the ACIA's supply, select/control signals, and TX routing rather than the terminal application.
 
+## The ACIA Turn: When the Firmware Met the Pinout
+
+The TX probe did not remain idle. U1 pin 6 showed real digital bursts, while U1 pins 3 and 4 showed the expected receive and transmit clocks at approximately 1.843 MHz. That result moved the question from “is the ACIA alive?” to “what configuration did it receive?” The `RS` probe supplied the final bridge between firmware and hardware.
+
+The MC6850 defines `RS=0` for Control/Status and `RS=1` for Transmit/Receive Data. The board routes CPU A0 directly to U1 pin 11 (`RS`), making `$BE00` Control/Status and `$BE01` Data. The monitor had those two offsets reversed. Its apparent ACIA initialization wrote `$03` and `$51` to the data register; the short TX bursts were the ACIA transmitting those values at its default divide-by-1 rate rather than accepting a 115200-baud configuration.
+
+This is the point where disciplined measurement earns a source change. The repair is intentionally small and mechanical: use offset 0 for status/control and offset 1 for data in `CIDTA`, `COON`, and `CODTAO`. It will be rebuilt and host-verified as a new candidate before another EPROM is programmed.
+
 ## Active Working Step: First-Boot Hardware Diagnosis
 
 This is the current hand-off from host/emulator work to physical hardware.
 
 This step is the technical core of the titular podcast Episode 13, **“Feel the (ROM) burn.”** The episode follows the corrected image from reproducible host artifact, through independently verified programming and physical installation, to the next disciplined hardware observation.
 
-1. Probe ACIA TX (U1 pin 6 / P1 pin 5) after the reset-release delay; confirm an idle-high line and look for banner traffic at 115200 baud.
-2. If TX remains idle, verify ACIA supply, chip select/control activity, and the U1-to-P1 TX path before changing terminal software.
-3. Once serial output appears, capture the `ASSIST09` banner and `>` prompt at `115200,n,8,1`, no handshake. Only then build and send `src/assist-09/assist09-smoke.s19`, run `G 1000`, and record `ASSIST09 RAM SMOKE TEST PASSED`.
+1. Apply the ACIA register-offset source repair, then rebuild and host-verify a new 16 KiB programmer image.
+2. Program and full-device-readback verify that new image before installing it.
+3. Probe TX again; the frame timing should now be 115200 baud (about 8.68 us per bit) rather than the default divide-by-1 timing.
+4. Once serial output appears, capture the `ASSIST09` banner and `>` prompt at `115200,n,8,1`, no handshake. Only then build and send `src/assist-09/assist09-smoke.s19`, run `G 1000`, and record `ASSIST09 RAM SMOKE TEST PASSED`.
 
 Capture the backup filename and checksum, programmer device selection and verify result, EPROM orientation, terminal configuration, and every observed character. A silent first boot is still useful evidence: proceed to the board-side voltage, reset, clock, reset-vector, and ACIA-TX checks rather than changing multiple variables at once.
 

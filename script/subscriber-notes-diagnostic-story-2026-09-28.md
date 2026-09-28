@@ -55,7 +55,17 @@ Primary figure:
 
 ### 6. Where the Investigation Stands
 
-The EPROM contents, supply presence, reset release, E-clock, and lower-address-bus activity have all been demonstrated. Serial output remains absent. The next clean question is ACIA transmit: probe U1 pin 6 / P1 pin 5 after the reset-release delay. The line should idle high and show 115200-baud activity while ASSIST09 emits its banner.
+The TX probe changed the story again. U1 pin 6 was not silent: it emitted short digital bursts. The receive and transmit clock pins measured approximately 1.843 MHz, so the ACIA clock source was correct. The bursts, however, were far too short to be 115200-baud characters.
+
+The answer was in the relationship between source and pinout. On the 6850, `RS=0` selects Control/Status and `RS=1` selects Data. The board carries CPU A0 directly to U1 pin 11 (`RS`), so `$BE00` is Control/Status and `$BE01` is Data. The monitor source had those offsets reversed. Its two intended initialization bytes, `$03` and `$51`, were being transmitted as raw data while the ACIA remained in its default divide-by-1 mode.
+
+Suggested figures:
+
+- [acia-burst.jpg](../images/acia-burst.jpg) and [acia-burst-narrow.jpg](../images/acia-burst-narrow.jpg) — TX was alive, but its timing was wrong.
+- [acia-crystal-01.jpg](../images/acia-crystal-01.jpg) and [acia-crystal-02.jpg](../images/acia-crystal-02.jpg) — both ACIA clocks were correct.
+- [RS.jpg](../images/RS.jpg) — register-select activity connecting the bus diagnosis to the firmware mistake.
+
+The next chapter is a deliberately small source repair: Control/Status moves to offset 0; Data moves to offset 1. The new ROM must earn its place through a rebuild, programmer readback, and a fresh hardware boot test.
 
 ## Preservation Decision
 

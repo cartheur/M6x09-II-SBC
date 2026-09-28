@@ -85,6 +85,33 @@ The reset release is intentionally slow because of the board's reset RC network.
 
 Next diagnostic: probe ACIA TX at U1 pin 6 / P1 pin 5 with the AD2 Scope after the reset-release delay. It should idle high and show 115200-baud activity while ASSIST09 emits its banner. If it remains idle, investigate the ACIA supply, chip select/control signals, and the U1-to-P1 TX path before revisiting terminal software.
 
+## ACIA Register-Select Diagnosis
+
+Date: 2026-09-28
+
+The ACIA transmit investigation reached a source-level conclusion. AD2 captures establish that the physical prerequisites are present:
+
+- U1 pin 4 (`TXCLK`) measures 1.8427 MHz.
+- U1 pin 3 (`RXCLK`) measures 1.8445 MHz.
+- U1 pin 11 (`RS`) is active during CPU bus accesses.
+- U1 pin 6 (`TXDATA`) idles high near 4.7 V and produces short digital transmit bursts.
+
+The bursts are far shorter than an 115200-baud character. The local [MC6850 data sheet](../build/datasheets/MC6850.pdf) defines `RS=0` as Control/Status and `RS=1` as Transmit/Receive Data. The board schematic connects CPU A0 directly to U1 pin 11 (`RS`), so `$BE00` selects Control/Status and `$BE01` selects Data.
+
+The current monitor source uses those offsets in reverse: it writes the intended ACIA reset (`$03`) and configuration (`$51`) to offset 1, and reads status/writes transmit data at offset 0. The observed short TX bursts are consistent with `$03` and `$51` being emitted as data while the ACIA remains in its default divide-by-1 mode.
+
+The next source change swaps those register offsets in `CIDTA`, `COON`, and `CODTAO`:
+
+| Operation | Current offset | Required offset |
+| --- | --- | --- |
+| Read status | 1 | 0 |
+| Read received data | 0 | 1 |
+| Write control (`$03`, `$51`) | 1 | 0 |
+| Read transmit status | 1 | 0 |
+| Write transmit data | 0 | 1 |
+
+This conclusion supersedes the earlier claim that the checked-in candidate's ACIA register selection was corrected. The existing EPROM readback remains valid evidence of what was programmed, but it is not the final working monitor image.
+
 Complete and record these remaining observations on the target board:
 
 1. With power removed, install the EPROM, confirming its orientation and exact device type.
