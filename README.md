@@ -66,6 +66,5 @@ _Parts list_
 
 15.01.2024: Beginning the final assembly of _alpha_, then will continue to the assembly of _gamma_. Printed labels affixed to each.
 
-26.09.2026: Actively debugging the board.
-
+26.09.2026: Actively debugging the board. A few stupid errors found so creatig an emulator to check the worst-cases before burning ROM. 
 
