@@ -1,4 +1,4 @@
-AS9 := ../assembler/as9
+AS9 := ../assembler/as9-host
 PROGRAMMER_IMAGE := ../../roms/assist09-27c128.bin
 PROGRAMMER_CHECKSUM := $(PROGRAMMER_IMAGE).sha256
 

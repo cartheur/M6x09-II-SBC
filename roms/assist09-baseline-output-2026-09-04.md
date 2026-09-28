@@ -2,9 +2,11 @@
 
 Date: 2026-09-04
 
-Status: host-verified; hardware acceptance pending.
+Status: superseded by a host-verified ACIA-corrected candidate; hardware acceptance pending.
 
-This record is the first output of the M6x09-II-SBC ROM workflow. It establishes ASSIST09 as the reproducible monitor baseline before Forth, BASIC, or combined-ROM work is considered.
+This record began as the first output of the M6x09-II-SBC ROM workflow. The original baseline exposed an ACIA register-selection and status-polling defect in the emulator, so the current preserved image is an ACIA-corrected candidate rather than the original untested baseline.
+
+The original raw 2 KiB monitor SHA-256 was `15d015d50df6a71fae61c459c2d009f251f08c9bb8c7a3dbd0bf1524cac1d394`. It remains historical evidence only; do not program it for the next board session.
 
 ## Inputs
 
@@ -23,7 +25,8 @@ The clean-room AS9 rebuild completed successfully and matched the final 2 KiB of
 | ROM address range | `$F800-$FFFF` |
 | Final S-record address | `$FFF0` |
 | Reset vector | `$F837` |
-| SHA-256 | `15d015d50df6a71fae61c459c2d009f251f08c9bb8c7a3dbd0bf1524cac1d394` |
+| Corrected 2 KiB monitor SHA-256 | `6175249f8ea71f8bc4e3c0e92745f4b1a9f8941e078106bf9b196dff904f7592` |
+| Corrected 16 KiB programmer image SHA-256 | `1d7fdbe412c8e57084b99b981a24c8fbdbc013227a6da04b1810c67054aa2d72` |
 
 Run the same check from the repository root with:
 
@@ -33,7 +36,7 @@ scripts/verify-assist09-image.sh
 
 ## Hardware Acceptance Gate
 
-The image is not yet a hardware-verified ROM milestone. Complete and record these observations on the target board:
+The corrected candidate is not yet a hardware-verified ROM milestone. Complete and record these observations on the target board:
 
 1. Build `roms/assist09-27c128.bin` with `make -C src/assist-09 programmer-image`. The build also creates `roms/assist09-27c128.bin.sha256`. The board maps its 16 KiB ROM at `$C000-$FFFF`; this image fills `$C000-$F7FF` with `0xFF` and places ASSIST09 at `$F800-$FFFF`.
 2. Read and save a backup of the existing EPROM, then blank-check the replacement if applicable.

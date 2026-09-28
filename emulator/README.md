@@ -13,7 +13,7 @@ The first model should provide:
 - a 16 KiB ROM at `$C000-$FFFF` loaded from `roms/assist09-27c128.bin`;
 - traceable reads of `$FFFE-$FFFF` and reset-vector loading into the CPU program counter.
 
-The current implementation provides the memory map, ROM loader, ACIA state model, reset-vector trace, and a deliberately small 6809 instruction subset. That subset executes ASSIST09's vector-initialization routine through its return to `$F83D`, plus its ACIA setup attempt and transmit-polling routine. The 6850 model follows the schematic's direct `A0 -> RS` connection: `$BE00` is data and `$BE01` is control/status. Unsupported instructions stop explicitly. It is not yet a complete 6809 implementation.
+The current implementation provides the memory map, ROM loader, ACIA state model, reset-vector trace, and a deliberately small 6809 instruction subset. That subset executes ASSIST09's vector-initialization routine through its return to `$F83D`, plus its ACIA setup and transmit-polling routines. The 6850 model follows the schematic's direct `A0 -> RS` connection: `$BE00` is data and `$BE01` is control/status. Unsupported instructions stop explicitly. It is not yet a complete 6809 implementation.
 
 The emulator must make ACIA status flags controllable by tests. This is necessary to reproduce and correct the current ASSIST09 polling faults: receive must test `RDRF` (bit 0), while transmit must test `TDRE` (bit 1).
 

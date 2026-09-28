@@ -230,6 +230,14 @@ M6x09CpuResult m6x09_cpu6809_step(M6x09Cpu6809 *cpu, M6x09Machine *machine)
         }
         break;
     }
+    case 0x27: {
+        int8_t displacement = (int8_t)fetch_byte(cpu, machine);
+
+        if ((cpu->cc & M6X09_CC_ZERO) != 0) {
+            cpu->pc = (uint16_t)(cpu->pc + displacement);
+        }
+        break;
+    }
     case 0x30:
         cpu->x = indexed_address(cpu, machine);
         break;

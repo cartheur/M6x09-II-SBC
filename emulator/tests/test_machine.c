@@ -77,7 +77,13 @@ static void test_assist09_vector_initialization(const char *rom_path)
 static void step_count(M6x09Cpu6809 *cpu, M6x09Machine *machine, unsigned int count)
 {
     for (unsigned int step = 0; step < count; step++) {
-        assert(m6x09_cpu6809_step(cpu, machine) == M6X09_CPU_OK);
+        M6x09CpuResult result = m6x09_cpu6809_step(cpu, machine);
+
+        if (result != M6X09_CPU_OK) {
+            fprintf(stderr, "unsupported opcode $%02X at $%04X\n",
+                    cpu->unsupported_opcode, (uint16_t)(cpu->pc - 1));
+        }
+        assert(result == M6X09_CPU_OK);
     }
 }
 
@@ -96,9 +102,8 @@ static void test_assist09_acia_initialization_and_polling(const char *rom_path)
     cpu.pc = 0xfae7;
     step_count(&cpu, &machine, 5);
     assert(cpu.pc == 0xfaf1);
-    assert(machine.acia.control == 0);
-    assert(machine.acia.transmit_data == 0x51);
-    assert(machine.acia.transmit_count == 2);
+    assert(machine.acia.control == 0x51);
+    assert(machine.acia.transmit_count == 0);
     assert(machine.acia.status == M6X09_ACIA_TDRE);
 
     cpu.pc = 0xfb13;
@@ -107,9 +112,9 @@ static void test_assist09_acia_initialization_and_polling(const char *rom_path)
     step_count(&cpu, &machine, 4);
     assert(cpu.pc == 0xfb1b);
     assert(machine.acia.transmit_data == 'A');
-    assert(machine.acia.transmit_count == 3);
+    assert(machine.acia.transmit_count == 1);
 
-    m6x09_acia_receive(&machine, 'R');
+    machine.acia.status &= (uint8_t)~M6X09_ACIA_TDRE;
     cpu.pc = 0xfb13;
     step_count(&cpu, &machine, 3);
     assert(cpu.pc == 0xfb10);

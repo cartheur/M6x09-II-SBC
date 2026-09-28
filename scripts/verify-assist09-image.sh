@@ -2,14 +2,14 @@
 set -euo pipefail
 
 repo_root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-assembler="$repo_root/src/assembler/as9"
+assembler="$repo_root/src/assembler/as9-host"
 source_file="$repo_root/src/assist-09/assist09.asm"
 reference_image="$repo_root/roms/assist09-27c128.bin"
 build_dir=$(mktemp -d "${TMPDIR:-/tmp}/assist09-build.XXXXXX")
 
 trap 'rm -rf -- "$build_dir"' EXIT
 
-make -C "$repo_root/src/assembler" as9
+make -C "$repo_root/src/assembler" as9-host
 cp "$source_file" "$build_dir/assist09.asm"
 
 (

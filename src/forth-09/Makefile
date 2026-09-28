@@ -1,4 +1,4 @@
-AS9 := ../assembler/as9
+AS9 := ../assembler/as9-host
 
 .PHONY: all forth09 clean
 

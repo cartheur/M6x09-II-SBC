@@ -12,3 +12,6 @@ src/forth-09/*.crf
 
 # Native emulator build artifacts
 emulator/build/
+
+# Rebuilt native AS9 host assembler (the historical binary remains tracked)
+src/assembler/as9-host
