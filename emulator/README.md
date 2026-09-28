@@ -4,29 +4,29 @@ This directory contains the first C-based host model for the M6x09-II-SBC. Its p
 
 ## Scope
 
-The first model should provide:
+The current model provides:
 
-- an MC6809 CPU core behind a small adapter interface (not implemented yet);
+- a deliberately partial MC6809 execution core behind a small adapter interface;
 - 32 KiB RAM at `$0000-$7FFF`;
 - an unmapped region at `$8000-$9FFF`;
-- a minimal 6850-compatible ACIA at `$BE00`;
+- a minimal 6850-compatible ACIA with data at `$BE00` and control/status at `$BE01`;
 - a 16 KiB ROM at `$C000-$FFFF` loaded from `roms/assist09-27c128.bin`;
 - traceable reads of `$FFFE-$FFFF` and reset-vector loading into the CPU program counter.
 
 The current implementation provides the memory map, ROM loader, ACIA state model, reset-vector trace, and a deliberately small 6809 instruction subset. That subset executes ASSIST09's vector-initialization routine through its return to `$F83D`, plus its ACIA setup and transmit-polling routines. The 6850 model follows the schematic's direct `A0 -> RS` connection: `$BE00` is data and `$BE01` is control/status. Unsupported instructions stop explicitly. It is not yet a complete 6809 implementation.
 
-The emulator must make ACIA status flags controllable by tests. This is necessary to reproduce and correct the current ASSIST09 polling faults: receive must test `RDRF` (bit 0), while transmit must test `TDRE` (bit 1).
+The emulator makes ACIA status flags controllable by tests. The regression suite protects the corrected ASSIST09 contract: receive tests `RDRF` (bit 0), while transmit tests `TDRE` (bit 1).
 
 It will not validate EPROM programming or orientation, power rails, reset circuitry, clocks, FTDI voltage levels, or PCB wiring. Those remain board-debugging work.
 
-## Proposed Layout
+## Layout
 
 ```text
 emulator/
 ├── Makefile
 ├── README.md
 ├── src/                 # host-side C implementation
-├── tests/               # C tests and 6809 assembly fixtures
+├── tests/               # native C regression tests
 └── build/               # ignored executables, traces, and generated fixtures
 ```
 
@@ -53,15 +53,15 @@ Run the native regression tests with:
 make -C emulator test
 ```
 
-The repository's checked-in `src/assembler/as9` executable is a legacy 32-bit binary and does not run on the current host. Before relying on generated assembly fixtures, make its build reproducible with a GNU89-compatible compiler mode.
+The repository's checked-in `src/assembler/as9` executable is a legacy 32-bit binary and does not run on the current host. `make -C src/assembler as9-host` rebuilds an ignored native replacement with GNU89-compatible compiler mode; the ASSIST09 and Forth Makefiles use that replacement.
 
 ## First Milestones
 
 1. Load the preserved 16 KiB ASSIST09 programmer image and assert its size. **Done.**
 2. Reset the CPU and assert reads from `$FFFE-$FFFF` resolve to `$F837`. **Done.**
-3. Extend the 6809 core from the reset-vector and ACIA-routine subsets into the SWI monitor path.
-4. Extend the minimal ACIA register model and capture monitor output.
-5. Write regression tests for `RDRF` and `TDRE` behaviour before changing ASSIST09.
+3. Execute the corrected ACIA setup and transmit-polling routines. **Done.**
+4. Extend the 6809 core from the reset-vector and ACIA-routine subsets into the SWI monitor path.
+5. Extend the minimal ACIA model to capture monitor output over a sequence of transmitted bytes.
 6. Assemble and execute the RAM smoke-test fixture at `$1000`.
 7. Preserve a concise reset/console trace to compare against the physical board session.
 
