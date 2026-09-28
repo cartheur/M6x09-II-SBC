@@ -58,21 +58,29 @@ The correction preserves the removed instruction's byte with a `NOP`. The rebuil
 - Programmer image: `roms/assist09-27c128.bin`, 16,384 bytes, SHA-256 `1d7fdbe412c8e57084b99b981a24c8fbdbc013227a6da04b1810c67054aa2d72`
 - Host checks passed: `scripts/verify-assist09-image.sh`, `make -C emulator test`, and `sha256sum -c assist09-27c128.bin.sha256` from `roms/`.
 
-The only remaining acceptance is physical: back up the existing EPROM; program and verify this candidate; reset at `115200,n,8,1`, no handshake; and preserve the terminal, programmer, and scope evidence.
+## Programmer And First-Boot Evidence (2026-09-28)
 
-## Active Working Step: Burn And First Boot
+The corrected 16 KiB image was programmed from the Windows host. Its complete EPROM readback was preserved as `roms/readback.bin` and compared on Linux with `roms/assist09-27c128.bin`: all 16,384 bytes matched, with the expected SHA-256 `1d7fdbe412c8e57084b99b981a24c8fbdbc013227a6da04b1810c67054aa2d72`. This confirms the programmed device contents, not board execution.
+
+The first boot remained silent. At `115200,n,8,1`, no handshake, resetting the board produced neither the `ASSIST09` banner nor a `>` prompt. A separate direct 45-second FTDI capture sent a carriage return and included a board reset; it received zero bytes. The terminal GUI is therefore not the immediate explanation. The physical acceptance work now begins with reset release, CPU clock, and reset-vector fetch at `$FFFE-$FFFF` (expected vector `$F837`), before moving to ACIA TX and serial wiring.
+
+## Reset, Clock, And Address-Bus Milestone (2026-09-28)
+
+The next physical observations narrowed the silence without changing firmware. The AD2 scope showed the board's reset circuit behaving as an RC release: holding Reset drove H2 pin 7 low, and releasing it produced a smooth rise that settled near 4.5 V after roughly 100–150 ms. A short digital capture had misleadingly appeared to show reset chatter; it was sampling the slow analog ramp as it crossed the analyzer threshold. The long capture made the distinction visible.
+
+With reset released, H2 pin 9 (`E`) measured 1.8431 MHz, exactly the expected CPU E-clock rate derived from the 7.3728 MHz oscillator. The AD2 Logic Analyzer then captured continuously changing values on H2 A0–A11, grouped as a hexadecimal bus. The CPU is therefore receiving power, leaving reset, clocking, and generating address-bus activity. The HD6309 installed in the board remains compatible with the ASSIST09/6809 reset-vector and bus assumptions used here.
+
+The diagnostic sequence was deliberately incremental: correct the FTDI supply jumper, scope reset over a long enough interval to see its RC release, verify E-clock, then observe the lower address bus. Each step removed one category of failure without claiming serial success. The next instrument point is ACIA TX—U1 pin 6 / P1 pin 5—after the reset-release delay. It should idle high and show 115200-baud traffic during the ASSIST09 banner. A continued idle line would move the investigation to the ACIA's supply, select/control signals, and TX routing rather than the terminal application.
+
+## Active Working Step: First-Boot Hardware Diagnosis
 
 This is the current hand-off from host/emulator work to physical hardware.
 
-This step is the technical core of the titular podcast Episode 13, **“Feel the (ROM) burn.”** The episode follows the corrected image from reproducible host artifact, through programmer verification and physical installation, to either its first monitor prompt or the next disciplined hardware observation.
+This step is the technical core of the titular podcast Episode 13, **“Feel the (ROM) burn.”** The episode follows the corrected image from reproducible host artifact, through independently verified programming and physical installation, to the next disciplined hardware observation.
 
-1. Use Batronix to read the installed EPROM and save an unmodified backup before erasing or programming anything.
-2. Select the exact EPROM device marking in Batronix; do not assume `27C128` if the chip says otherwise.
-3. Load and program the complete 16 KiB `roms/assist09-27c128.bin` image. Do not use the raw 2 KiB `src/assist-09/assist09.bin` as a full-device payload.
-4. Run Batronix verify. The image must have SHA-256 `1d7fdbe412c8e57084b99b981a24c8fbdbc013227a6da04b1810c67054aa2d72`.
-5. With board power removed, install the EPROM and photograph or otherwise record its orientation.
-6. Start the Tcl terminal at `115200,n,8,1`, no handshake, begin recording, apply power or reset, and retain the complete capture.
-7. The first success condition is the `ASSIST09` banner and `>` prompt. Only then build and send `src/assist-09/assist09-smoke.s19`, run `G 1000`, and record `ASSIST09 RAM SMOKE TEST PASSED`.
+1. Probe ACIA TX (U1 pin 6 / P1 pin 5) after the reset-release delay; confirm an idle-high line and look for banner traffic at 115200 baud.
+2. If TX remains idle, verify ACIA supply, chip select/control activity, and the U1-to-P1 TX path before changing terminal software.
+3. Once serial output appears, capture the `ASSIST09` banner and `>` prompt at `115200,n,8,1`, no handshake. Only then build and send `src/assist-09/assist09-smoke.s19`, run `G 1000`, and record `ASSIST09 RAM SMOKE TEST PASSED`.
 
 Capture the backup filename and checksum, programmer device selection and verify result, EPROM orientation, terminal configuration, and every observed character. A silent first boot is still useful evidence: proceed to the board-side voltage, reset, clock, reset-vector, and ACIA-TX checks rather than changing multiple variables at once.
 
