@@ -9,3 +9,6 @@ src/forth-09/*.lst
 src/forth-09/*.s19
 src/forth-09/*.sym
 src/forth-09/*.crf
+
+# Native emulator build artifacts
+emulator/build/
