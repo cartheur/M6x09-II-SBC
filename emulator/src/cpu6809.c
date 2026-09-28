@@ -261,6 +261,9 @@ M6x09CpuResult m6x09_cpu6809_step(M6x09Cpu6809 *cpu, M6x09Machine *machine)
         }
         break;
     }
+    case 0x39:
+        cpu->pc = pull_word(cpu, machine);
+        break;
     case 0x4f:
         cpu->a = 0;
         set_zero(cpu, cpu->a);
@@ -281,6 +284,10 @@ M6x09CpuResult m6x09_cpu6809_step(M6x09Cpu6809 *cpu, M6x09Machine *machine)
         cpu->pc = (uint16_t)(cpu->pc + displacement);
         break;
     }
+    case 0x86:
+        cpu->a = fetch_byte(cpu, machine);
+        set_zero(cpu, cpu->a);
+        break;
     case 0x8e:
         cpu->x = fetch_word(cpu, machine);
         set_zero(cpu, cpu->x);
@@ -289,6 +296,11 @@ M6x09CpuResult m6x09_cpu6809_step(M6x09Cpu6809 *cpu, M6x09Machine *machine)
         address = (uint16_t)((uint16_t)cpu->dp << 8) | fetch_byte(cpu, machine);
         m6x09_write(machine, address, cpu->a);
         set_zero(cpu, cpu->a);
+        break;
+    case 0x9e:
+        address = (uint16_t)((uint16_t)cpu->dp << 8) | fetch_byte(cpu, machine);
+        cpu->x = read_word(machine, address);
+        set_zero(cpu, cpu->x);
         break;
     case 0xa6:
         cpu->a = m6x09_read(machine, indexed_address(cpu, machine));
@@ -310,9 +322,16 @@ M6x09CpuResult m6x09_cpu6809_step(M6x09Cpu6809 *cpu, M6x09Machine *machine)
         cpu->b = fetch_byte(cpu, machine);
         set_zero(cpu, cpu->b);
         break;
+    case 0xc5:
+        set_zero(cpu, (uint8_t)(cpu->b & fetch_byte(cpu, machine)));
+        break;
     case 0xe3:
         set_d(cpu, (uint16_t)(get_d(cpu) + read_word(machine, indexed_address(cpu, machine))));
         set_zero(cpu, get_d(cpu));
+        break;
+    case 0xe6:
+        cpu->b = m6x09_read(machine, indexed_address(cpu, machine));
+        set_zero(cpu, cpu->b);
         break;
     case 0xed:
         write_word(machine, indexed_address(cpu, machine), get_d(cpu));

@@ -15,6 +15,7 @@ The ASSIST09 ACIA polling code is not consistent with the checked-in MC6850 data
 
 - `CIDTA` at `src/assist-09/assist09.asm` reads ACIA status and shifts it twice. Its carry test therefore observes status bit 1 (`TDRE`, transmit-data-register empty), while the comment says it is testing receive data.
 - `CODTAO` tests status bit 0 (`RDRF`, receive-data-register full) while its comment says it is waiting for transmit readiness. The source itself marks this `FIXME`.
+- The schematic connects CPU `A0` directly to the 6850 `RS` input. Therefore `$BE00` is the data register and `$BE01` is control/status. `COON` reads status at `$BE01` elsewhere in the source, but writes its `$03` reset and `$51` control bytes to `$BE00`; those bytes are transmitted as data rather than configuring the ACIA.
 
 These errors can prevent reliable console input and output even when the board is electrically healthy. Correct and test the polling masks before treating the serial link as proven end to end.
 
@@ -37,6 +38,12 @@ Test `115200,n,8,1`, no handshake, before changing board wiring. Confirm the clo
 ## Podcast Evidence Checklist
 
 For each test, record the date, board revision, CPU/ACIA/EPROM markings, power source, EPROM image SHA-256, terminal configuration, instrument settings, raw observation, and conclusion. Keep photos and captures immutable; place interpretation and follow-up actions in the session log.
+
+## Emulator Evidence: Reset And ACIA Slice
+
+The native C emulator now loads the preserved 16 KiB image, reads the reset vector as `$F8,$37`, and executes ASSIST09's vector-initialization routine through its return to `$F83D`. Its regression test also executes the monitor's ACIA setup attempt at `$FAE7`. With the schematic-accurate 6850 register mapping, that code writes `$03` and `$51` to `$BE00` (data), leaving the `$BE01` control register untouched. This makes the missing initial ACIA configuration reproducible in the emulator.
+
+The same test executes `CODTAO` at `$FB13`. With only `TDRE` set, the routine tests bit 0, falls through, and writes the output character. After the emulator sets `RDRF`, that same test branches into its wait path. This is executable confirmation that the firmware's transmit polling is controlled by receive status, not transmit readiness. It supports the source-level diagnosis, but it does not replace a physical ACIA or scope observation.
 
 ## Narrative Arc
 

@@ -5,12 +5,12 @@
 
 static bool is_acia_status(uint16_t address)
 {
-    return address == M6X09_ACIA_ADDRESS;
+    return address == M6X09_ACIA_ADDRESS + 1;
 }
 
 static bool is_acia_data(uint16_t address)
 {
-    return address == M6X09_ACIA_ADDRESS + 1;
+    return address == M6X09_ACIA_ADDRESS;
 }
 
 void m6x09_machine_init(M6x09Machine *machine)
@@ -74,6 +74,11 @@ void m6x09_write(M6x09Machine *machine, uint16_t address, uint8_t value)
 
     if (is_acia_status(address)) {
         machine->acia.control = value;
+        if (value == 0x03) {
+            machine->acia.status = M6X09_ACIA_TDRE;
+            machine->acia.receive_data = 0;
+            machine->acia.transmit_data = 0;
+        }
         return;
     }
 

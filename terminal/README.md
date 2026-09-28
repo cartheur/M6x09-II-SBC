@@ -32,7 +32,7 @@ Recommended settings in the terminal window:
 
 The script is tuned for prompt-driven, line-paced uploads. It waits for a carriage return before sending the next line, which matches the repo note that uploads need pacing because there is no hardware handshaking.
 
-`115200` is the expected initial rate: the schematic connects the 6850's receive and transmit clocks to the 6809 `E` clock, and ASSIST09 selects the ACIA divide-by-16 mode. With the board's 7.3728 MHz oscillator, that implies 115200 baud. The earlier 19200 setting is retained as historical bring-up evidence, not the preferred configuration.
+`115200` is the expected initial rate after ACIA initialization is corrected: the schematic connects the 6850's receive and transmit clocks to the 6809 `E` clock, and ASSIST09 intends to select the ACIA divide-by-16 mode with control byte `$51`. With the board's 7.3728 MHz oscillator, that implies 115200 baud. The current baseline writes its `$03` and `$51` setup bytes to the data register rather than the control register, so changing terminal speed alone cannot restore console output. The earlier 19200 setting is retained as historical bring-up evidence, not the preferred configuration.
 
 ## P1 Wiring
 

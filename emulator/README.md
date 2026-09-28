@@ -13,7 +13,7 @@ The first model should provide:
 - a 16 KiB ROM at `$C000-$FFFF` loaded from `roms/assist09-27c128.bin`;
 - traceable reads of `$FFFE-$FFFF` and reset-vector loading into the CPU program counter.
 
-The current implementation provides the memory map, ROM loader, ACIA state model, reset-vector trace, and a deliberately small 6809 instruction subset. That subset executes ASSIST09's vector-initialization routine through its return to `$F83D`; unsupported instructions stop explicitly. It is not yet a complete 6809 implementation.
+The current implementation provides the memory map, ROM loader, ACIA state model, reset-vector trace, and a deliberately small 6809 instruction subset. That subset executes ASSIST09's vector-initialization routine through its return to `$F83D`, plus its ACIA setup attempt and transmit-polling routine. The 6850 model follows the schematic's direct `A0 -> RS` connection: `$BE00` is data and `$BE01` is control/status. Unsupported instructions stop explicitly. It is not yet a complete 6809 implementation.
 
 The emulator must make ACIA status flags controllable by tests. This is necessary to reproduce and correct the current ASSIST09 polling faults: receive must test `RDRF` (bit 0), while transmit must test `TDRE` (bit 1).
 
@@ -59,7 +59,7 @@ The repository's checked-in `src/assembler/as9` executable is a legacy 32-bit bi
 
 1. Load the preserved 16 KiB ASSIST09 programmer image and assert its size. **Done.**
 2. Reset the CPU and assert reads from `$FFFE-$FFFF` resolve to `$F837`. **Done.**
-3. Extend the 6809 core from the reset-vector subset into the SWI monitor path.
+3. Extend the 6809 core from the reset-vector and ACIA-routine subsets into the SWI monitor path.
 4. Extend the minimal ACIA register model and capture monitor output.
 5. Write regression tests for `RDRF` and `TDRE` behaviour before changing ASSIST09.
 6. Assemble and execute the RAM smoke-test fixture at `$1000`.
