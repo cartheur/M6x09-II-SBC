@@ -60,6 +60,22 @@ The correction preserves the removed instruction's byte with a `NOP`. The rebuil
 
 The only remaining acceptance is physical: back up the existing EPROM; program and verify this candidate; reset at `115200,n,8,1`, no handshake; and preserve the terminal, programmer, and scope evidence.
 
+## Active Working Step: Burn And First Boot
+
+This is the current hand-off from host/emulator work to physical hardware.
+
+This step is the technical core of the titular podcast Episode 13, **“Feel the (ROM) burn.”** The episode follows the corrected image from reproducible host artifact, through programmer verification and physical installation, to either its first monitor prompt or the next disciplined hardware observation.
+
+1. Use Batronix to read the installed EPROM and save an unmodified backup before erasing or programming anything.
+2. Select the exact EPROM device marking in Batronix; do not assume `27C128` if the chip says otherwise.
+3. Load and program the complete 16 KiB `roms/assist09-27c128.bin` image. Do not use the raw 2 KiB `src/assist-09/assist09.bin` as a full-device payload.
+4. Run Batronix verify. The image must have SHA-256 `1d7fdbe412c8e57084b99b981a24c8fbdbc013227a6da04b1810c67054aa2d72`.
+5. With board power removed, install the EPROM and photograph or otherwise record its orientation.
+6. Start the Tcl terminal at `115200,n,8,1`, no handshake, begin recording, apply power or reset, and retain the complete capture.
+7. The first success condition is the `ASSIST09` banner and `>` prompt. Only then build and send `src/assist-09/assist09-smoke.s19`, run `G 1000`, and record `ASSIST09 RAM SMOKE TEST PASSED`.
+
+Capture the backup filename and checksum, programmer device selection and verify result, EPROM orientation, terminal configuration, and every observed character. A silent first boot is still useful evidence: proceed to the board-side voltage, reset, clock, reset-vector, and ACIA-TX checks rather than changing multiple variables at once.
+
 ## Why The Emulator Was Worth The Investment
 
 The board began as a silent physical object. A scope-first session could have consumed hours validating power, reset, clocks, wiring, and levels without revealing that the firmware addressed the ACIA inconsistently. The emulator made the hardware contract executable: memory placement, reset-vector fetch, `A0 -> RS`, ACIA status bits, and data/control register behavior were all stated as testable rules.
