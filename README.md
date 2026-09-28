@@ -66,6 +66,8 @@ _Parts list_
 
 15.01.2024: Beginning the final assembly of _alpha_.
 
+26.09.2026: Actively debugging the board.
+
 
 
 #### Reference
