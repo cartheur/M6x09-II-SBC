@@ -2,7 +2,7 @@
 
 A minature seventeen-component singleboard computer to experiment with the `x09` architecture. The sister repository can be found [here](https://github.com/cartheur/M6x09-A).
 
-The (windows) terminal application to connect to this board via FTDI can be found [here](/serial/README.md).
+The Linux terminal application for connecting to this board via FTDI is documented [here](terminal/README.md).
 
 ### Working Readmes
 
@@ -49,7 +49,7 @@ _Parts list_
 | 9 | 330 | R1 | AXIAL-0.3 | 1 | RN60D3300FB14 | Vishay | Mouser | 71-RN60D3300F | 0.285 |
 | 10 | 2.2K | RN1 | SIP-9 | 1 | 4609X-101-222LF | Bourns | Mouser | 652-4609X-1LF-2.2K | 0.428 |
 | 11 | RESET | SW1 | TACTILE-PTH-EZ | 1 | TS02-66-50-BK-100-LCR-D | CUI Devices | Mouser | 179-TS026650BK100LCR | 0.093 |
-| 12 | 68C50 | U1 | DIP24-600 | 1 | DILB24P-224TLF | Amphenol | Mouser | 649-DILB24P-224TLF | 0.446 |
+| 12 | 68B50 | U1 | DIP24-600 | 1 | DILB24P-223TLF | Amphenol | Mouser | 649-DILB24P-223TLF | 0.503 |
 | 13 | 27C128 | U2 | DIP28-600 | 1 | 1-2199299-2 | TE Connectivity | Mouser | 571-1-2199299-2 | 0.688 |
 | 14 | 62256P | U3 | DIP28-600 | 1 | 1-2199299-2 | TE Connectivity | Mouser | 571-1-2199299-2 | 0.688 |
 | 15 | 6xC09 | U4 | DIP40-600-Ladder | 1 | 1-2199299-5 | TE Connectivity | Mouser | 571-1-2199299-5 | 0.874 |

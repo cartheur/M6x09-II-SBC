@@ -131,11 +131,17 @@ Those files are disposable unless they represent a milestone image.
 
 ## Which Build Output Is For Burning
 
-For the burn step, the file that belongs here is the final ROM image binary produced by the build, for example:
+For the current ASSIST09 burn step, build and program the complete 16 KiB device image:
 
-- `src/assist-09/assist09.bin`
+- `roms/assist09-27c128.bin`
 
-That `.bin` file is the EPROM payload to preserve, checksum, and program.
+Create it with:
+
+```bash
+make -C src/assist-09 programmer-image
+```
+
+The raw `src/assist-09/assist09.bin` file is only the 2 KiB monitor assembled for CPU addresses `$F800-$FFFF`. It is an input to the programmer-image target, not a complete 27C128 payload. The programmer image fills device offsets `$0000-$37FF` with `0xFF` and places that monitor at offsets `$3800-$3FFF`.
 
 The other build outputs have different roles:
 
@@ -144,7 +150,7 @@ The other build outputs have different roles:
 - `*.sym`: symbol output from the build
 - `*.crf`: cross-reference output from the build
 
-Only the final ROM image `.bin` should normally be copied into `roms/` for the burn path.
+For a future ROM layout, preserve and program a complete 16 KiB image whose contents and device offsets are documented alongside it. Do not program a raw partial binary as a full 27C128 image.
 
 ## What To Commit With A Milestone ROM
 

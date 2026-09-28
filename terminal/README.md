@@ -19,18 +19,20 @@ sudo apt-get install tk
 Launch the terminal:
 
 ```bash
-wish terminal/m6x09-terminal.tcl -device /dev/ttyUSB0 -baud 19200
+wish terminal/m6x09-terminal.tcl -device /dev/ttyUSB0 -baud 115200
 ```
 
 Recommended settings in the terminal window:
 
 - Device: `/dev/ttyUSB0` or `/dev/serial/by-id/...`
-- Speed: `19200`
+- Speed: `115200`
 - ParityAndBits: `n,8,1`
 - Hand Shake: `none`
 - Pause(ms): `2`
 
 The script is tuned for prompt-driven, line-paced uploads. It waits for a carriage return before sending the next line, which matches the repo note that uploads need pacing because there is no hardware handshaking.
+
+`115200` is the expected initial rate: the schematic connects the 6850's receive and transmit clocks to the 6809 `E` clock, and ASSIST09 selects the ACIA divide-by-16 mode. With the board's 7.3728 MHz oscillator, that implies 115200 baud. The earlier 19200 setting is retained as historical bring-up evidence, not the preferred configuration.
 
 ## P1 Wiring
 

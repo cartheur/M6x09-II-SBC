@@ -6,14 +6,14 @@
 # This script was adapted from a more general serial/Tk shell and tuned
 # for the current repo workflow:
 # - preferred host adapter: FTDI-style USB-to-TTL serial breakout
-# - preferred link settings: 19200,n,8,1 without handshake
+# - preferred link settings: 115200,n,8,1 without handshake
 # - line-paced uploads for ASSIST09 and BASIC sessions
 #
 # Typical usage:
-#   ./terminal/gtek-terminal.tcl
-#   ./terminal/gtek-terminal.tcl -device /dev/ttyUSB0
-#   ./terminal/gtek-terminal.tcl -device /dev/serial/by-id/...
-#   ./terminal/gtek-terminal.tcl -baud 9600
+#   wish terminal/m6x09-terminal.tcl
+#   wish terminal/m6x09-terminal.tcl -device /dev/ttyUSB0
+#   wish terminal/m6x09-terminal.tcl -device /dev/serial/by-id/...
+#   wish terminal/m6x09-terminal.tcl -baud 115200
 
 if { [string equal $::tcl_platform(platform) windows] } {
     console show
@@ -103,7 +103,7 @@ namespace eval cmdHistory {
 # Sending and receiving characters.
 
 namespace eval serialPort {
-    variable baudRate 19200
+    variable baudRate 115200
     variable parity "n"; # n=none e=even o=odd m=mark s=space
     variable dataBits 8; # 7 8
     variable stopBits 1; # 1 2
@@ -405,7 +405,7 @@ proc displayHints {} {
 	"\nSend XOFF   control-S"
 	"\n"
 	"\nRecommended starting point:"
-	"\n19200 baud, none handshake, 2 ms pause between chars."
+	"\n115200 baud, none handshake, 2 ms pause between chars."
 	"\nUse Send CR after reset to confirm the ASSIST09 prompt."
 	"\n----------------------------------------------------------"
 	"\n"
@@ -591,7 +591,7 @@ pack $lab1 $deviceEntry -side left
 set lab2 [ttk::label .sf.lab2 -text "Speed:"]
 set speedEntry [ttk::combobox .sf.entr2 -width 8 \
                     -textvariable ::serialPort::baudRate \
-                    -values [list 300 1200 2400 4800 9600 19200]]
+                    -values [list 300 1200 2400 4800 9600 19200 115200]]
 pack $lab2 $speedEntry -side left
 set lab3 [ttk::label .sf.lab3 -text "ParityAndBits:"]
 set parityBitsEntry [ttk::entry .sf.entr3 -width 6 -textvariable ::serialPort::parityAndBits]
