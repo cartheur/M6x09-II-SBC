@@ -2,7 +2,7 @@
 
 Date: 2026-09-04
 
-Status: superseded by a host-verified ACIA-corrected candidate; hardware acceptance pending.
+Status: the previously programmed candidate is superseded by a host-verified ACIA register-map correction; new-hardware acceptance pending.
 
 This record began as the first output of the M6x09-II-SBC ROM workflow. The original baseline exposed an ACIA register-selection and status-polling defect in the emulator, so the current preserved image is an ACIA-corrected candidate rather than the original untested baseline.
 
@@ -17,7 +17,7 @@ The original raw 2 KiB monitor SHA-256 was `15d015d50df6a71fae61c459c2d009f251f0
 
 ## Host Verification Result
 
-The clean-room AS9 rebuild completed successfully and matched the final 2 KiB of the checked-in `roms/assist09-27c128.bin` programmer image byte for byte.
+The clean-room AS9 rebuild completed successfully and matched the final 2 KiB of the checked-in `roms/assist09-27c128.bin` programmer image byte for byte after the ACIA register-map repair.
 
 | Check | Result |
 | --- | --- |
@@ -25,8 +25,8 @@ The clean-room AS9 rebuild completed successfully and matched the final 2 KiB of
 | ROM address range | `$F800-$FFFF` |
 | Final S-record address | `$FFF0` |
 | Reset vector | `$F837` |
-| Corrected 2 KiB monitor SHA-256 | `6175249f8ea71f8bc4e3c0e92745f4b1a9f8941e078106bf9b196dff904f7592` |
-| Corrected 16 KiB programmer image SHA-256 | `1d7fdbe412c8e57084b99b981a24c8fbdbc013227a6da04b1810c67054aa2d72` |
+| Register-map-corrected 2 KiB monitor SHA-256 | `3904c6277ab60bc03528475e4522bc5c8da37a09458d56687634842894f9c12c` |
+| Register-map-corrected 16 KiB programmer image SHA-256 | `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843` |
 
 Run the same check from the repository root with:
 
@@ -42,14 +42,14 @@ The corrected candidate has passed the programmer readback check, but board boot
 
 Date: 2026-09-28
 
-The 16 KiB corrected candidate was programmed using the Windows host. A full-device readback was saved as [readback.bin](readback.bin) and compared byte for byte with `assist09-27c128.bin` on Linux.
+The earlier 16 KiB candidate was programmed using the Windows host. A full-device readback was saved as [readback.bin](readback.bin) and compared byte for byte with the then-current programmer image on Linux. That image has since been superseded by the ACIA register-map repair below.
 
 | Check | Result |
 | --- | --- |
 | Readback size | 16,384 bytes |
-| Comparison with `assist09-27c128.bin` | Identical (byte for byte) |
+| Comparison with then-current programmer image | Identical (byte for byte) |
 | Readback SHA-256 | `1d7fdbe412c8e57084b99b981a24c8fbdbc013227a6da04b1810c67054aa2d72` |
-| Expected image checksum | Matched |
+| Current register-map-corrected image checksum | `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843` (does not match; expected) |
 
 `readback.txt` was renamed to `readback.bin`; it is raw binary data, not a text log.
 
@@ -98,7 +98,7 @@ The ACIA transmit investigation reached a source-level conclusion. AD2 captures 
 
 The bursts are far shorter than an 115200-baud character. The local [MC6850 data sheet](../build/datasheets/MC6850.pdf) defines `RS=0` as Control/Status and `RS=1` as Transmit/Receive Data. The board schematic connects CPU A0 directly to U1 pin 11 (`RS`), so `$BE00` selects Control/Status and `$BE01` selects Data.
 
-The current monitor source uses those offsets in reverse: it writes the intended ACIA reset (`$03`) and configuration (`$51`) to offset 1, and reads status/writes transmit data at offset 0. The observed short TX bursts are consistent with `$03` and `$51` being emitted as data while the ACIA remains in its default divide-by-1 mode.
+The previous monitor source used those offsets in reverse: it wrote the intended ACIA reset (`$03`) and configuration (`$51`) to offset 1, and read status/wrote transmit data at offset 0. The observed short TX bursts are consistent with `$03` and `$51` being emitted as data while the ACIA remained in its default divide-by-1 mode.
 
 The next source change swaps those register offsets in `CIDTA`, `COON`, and `CODTAO`:
 
@@ -110,7 +110,7 @@ The next source change swaps those register offsets in `CIDTA`, `COON`, and `COD
 | Read transmit status | 1 | 0 |
 | Write transmit data | 0 | 1 |
 
-This conclusion supersedes the earlier claim that the checked-in candidate's ACIA register selection was corrected. The existing EPROM readback remains valid evidence of what was programmed, but it is not the final working monitor image.
+The source repair has now been applied, including the matching emulator model and regression tests. It preserves the 2,048-byte monitor size. The new 16 KiB image has SHA-256 `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`; it passes `make -C emulator test`, `scripts/verify-assist09-image.sh`, and its checksum check. It differs in six bytes from `readback.bin`, as expected. The existing EPROM readback remains valid evidence of what was programmed, but it is not the final working monitor image and must not be used as the new burn candidate.
 
 Complete and record these remaining observations on the target board:
 

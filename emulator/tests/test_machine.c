@@ -18,14 +18,14 @@ static void test_acia_flags_and_data(void)
     M6x09Machine machine;
 
     m6x09_machine_init(&machine);
-    assert(m6x09_read(&machine, M6X09_ACIA_ADDRESS + 1) == M6X09_ACIA_TDRE);
+    assert(m6x09_read(&machine, M6X09_ACIA_ADDRESS) == M6X09_ACIA_TDRE);
 
     m6x09_acia_receive(&machine, 'A');
-    assert((m6x09_read(&machine, M6X09_ACIA_ADDRESS + 1) & M6X09_ACIA_RDRF) != 0);
-    assert(m6x09_read(&machine, M6X09_ACIA_ADDRESS) == 'A');
-    assert((m6x09_read(&machine, M6X09_ACIA_ADDRESS + 1) & M6X09_ACIA_RDRF) == 0);
+    assert((m6x09_read(&machine, M6X09_ACIA_ADDRESS) & M6X09_ACIA_RDRF) != 0);
+    assert(m6x09_read(&machine, M6X09_ACIA_ADDRESS + 1) == 'A');
+    assert((m6x09_read(&machine, M6X09_ACIA_ADDRESS) & M6X09_ACIA_RDRF) == 0);
 
-    m6x09_write(&machine, M6X09_ACIA_ADDRESS, 'B');
+    m6x09_write(&machine, M6X09_ACIA_ADDRESS + 1, 'B');
     assert(machine.acia.transmit_data == 'B');
     assert(machine.acia.transmit_count == 1);
 }

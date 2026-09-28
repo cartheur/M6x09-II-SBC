@@ -78,7 +78,13 @@ The TX probe did not remain idle. U1 pin 6 showed real digital bursts, while U1 
 
 The MC6850 defines `RS=0` for Control/Status and `RS=1` for Transmit/Receive Data. The board routes CPU A0 directly to U1 pin 11 (`RS`), making `$BE00` Control/Status and `$BE01` Data. The monitor had those two offsets reversed. Its apparent ACIA initialization wrote `$03` and `$51` to the data register; the short TX bursts were the ACIA transmitting those values at its default divide-by-1 rate rather than accepting a 115200-baud configuration.
 
-This is the point where disciplined measurement earns a source change. The repair is intentionally small and mechanical: use offset 0 for status/control and offset 1 for data in `CIDTA`, `COON`, and `CODTAO`. It will be rebuilt and host-verified as a new candidate before another EPROM is programmed.
+This is the point where disciplined measurement earned a source change. The repair is intentionally small and mechanical: offset 0 for status/control and offset 1 for data in `CIDTA`, `COON`, and `CODTAO`. The emulator model and regression test were corrected to the same map. The resulting 2,048-byte monitor and 16 KiB programmer image pass the emulator, clean-room image verifier, and checksum check; the new programmer-image SHA-256 is `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`. It is the next EPROM candidate, not yet a hardware result.
+
+## A Note On Agents And Responsibility
+
+This debugging session is also part of the episode's argument against treating an agent's output as self-authenticating. An agent, operating through the project account, made an honest but consequential ACIA mapping mistake while attempting to fix the monitor. The inherited archive code already contained part of the reversal; the later agent change extended it to initialization. Neither intent nor passing host tests was enough to make the result correct.
+
+The developer's responsibility does not disappear when an agent writes code: review the proposed change, compare it with the authoritative data sheet and schematic, measure the hardware, and retain evidence. Here the ROM readback, reset waveform, clocks, TX waveform, and `RS` trace turned an apparently plausible software fix into a falsifiable hardware claim. That is the standard the episode should leave with subscribers: use agents as collaborators, but keep diagnosis and acceptance accountable to the developer.
 
 ## Active Working Step: First-Boot Hardware Diagnosis
 

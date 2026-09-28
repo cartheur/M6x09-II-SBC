@@ -5,12 +5,12 @@
 
 static bool is_acia_status(uint16_t address)
 {
-    return address == M6X09_ACIA_ADDRESS + 1;
+    return address == M6X09_ACIA_ADDRESS;
 }
 
 static bool is_acia_data(uint16_t address)
 {
-    return address == M6X09_ACIA_ADDRESS;
+    return address == M6X09_ACIA_ADDRESS + 1;
 }
 
 void m6x09_machine_init(M6x09Machine *machine)

@@ -9,11 +9,11 @@ The current model provides:
 - a deliberately partial MC6809 execution core behind a small adapter interface;
 - 32 KiB RAM at `$0000-$7FFF`;
 - an unmapped region at `$8000-$9FFF`;
-- a minimal 6850-compatible ACIA with data at `$BE00` and control/status at `$BE01`;
+- a minimal 6850-compatible ACIA with control/status at `$BE00` and data at `$BE01`;
 - a 16 KiB ROM at `$C000-$FFFF` loaded from `roms/assist09-27c128.bin`;
 - traceable reads of `$FFFE-$FFFF` and reset-vector loading into the CPU program counter.
 
-The current implementation provides the memory map, ROM loader, ACIA state model, reset-vector trace, and a deliberately small 6809 instruction subset. That subset executes ASSIST09's vector-initialization routine through its return to `$F83D`, plus its ACIA setup and transmit-polling routines. The 6850 model follows the schematic's direct `A0 -> RS` connection: `$BE00` is data and `$BE01` is control/status. Unsupported instructions stop explicitly. It is not yet a complete 6809 implementation.
+The current implementation provides the memory map, ROM loader, ACIA state model, reset-vector trace, and a deliberately small 6809 instruction subset. That subset executes ASSIST09's vector-initialization routine through its return to `$F83D`, plus its ACIA setup and transmit-polling routines. The 6850 model follows the schematic's direct `A0 -> RS` connection and the 6850 register-select definition: `$BE00` is control/status and `$BE01` is data. Unsupported instructions stop explicitly. It is not yet a complete 6809 implementation.
 
 The emulator makes ACIA status flags controllable by tests. The regression suite protects the corrected ASSIST09 contract: receive tests `RDRF` (bit 0), while transmit tests `TDRE` (bit 1).
 
