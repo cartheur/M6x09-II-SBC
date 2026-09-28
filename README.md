@@ -28,11 +28,11 @@ _The board_
 
 Layout (v1.1)
 
-![image](/design/Layout_M6809-II-SBC.png)
+![image](/build/project/layout.png)
 
 The manufactured ouput (unassembled version).
 
-![image](/design/bare-board.jpg)
+![image](/build/bare-board.jpg)
 
 _Parts list_
 
