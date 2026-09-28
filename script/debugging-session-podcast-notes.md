@@ -86,6 +86,12 @@ This debugging session is also part of the episode's argument against treating a
 
 The developer's responsibility does not disappear when an agent writes code: review the proposed change, compare it with the authoritative data sheet and schematic, measure the hardware, and retain evidence. Here the ROM readback, reset waveform, clocks, TX waveform, and `RS` trace turned an apparently plausible software fix into a falsifiable hardware claim. That is the standard the episode should leave with subscribers: use agents as collaborators, but keep diagnosis and acceptance accountable to the developer.
 
+## Two EPROMs, Not an Expanding Pile
+
+For greenfield development, keep two erasable EPROMs in a deliberate burn rotation. Each receives a named, host-verified candidate, with its image checksum and a complete readback recorded. After those two development versions have served their diagnostic purpose, erase and reuse one for the next candidate rather than reaching for a third or fourth chip.
+
+Agents can make mistakes, and a disciplined hardware diagnosis can require more than two burn sessions—as this board's history demonstrates. That is an argument for a tight two-chip cycle, not for accumulating a pile of indistinguishable EPROMs. Reuse keeps the work focused on the current debugging hypothesis and its final result, while the repository preserves the evidence for every meaningful burn.
+
 ## Active Working Step: First-Boot Hardware Diagnosis
 
 This is the current hand-off from host/emulator work to physical hardware.
