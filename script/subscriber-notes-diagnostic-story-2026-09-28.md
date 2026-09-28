@@ -65,7 +65,7 @@ Suggested figures:
 - [acia-crystal-01.jpg](../images/acia-crystal-01.jpg) and [acia-crystal-02.jpg](../images/acia-crystal-02.jpg) — both ACIA clocks were correct.
 - [RS.jpg](../images/RS.jpg) — register-select activity connecting the bus diagnosis to the firmware mistake.
 
-The next chapter became a deliberately small source repair: Control/Status now uses offset 0; Data now uses offset 1. The matching emulator model was repaired too, and the rebuilt candidate passed its host checks. Its 16 KiB image SHA-256 is `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`. It must still earn its place through programmer readback and a fresh hardware boot test.
+The next chapter became a deliberately small source repair: Control/Status now uses offset 0; Data now uses offset 1. The matching emulator model was repaired too, and the rebuilt candidate passed its host checks. Its 16 KiB image SHA-256 is `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`. The corrected EPROM was programmed, and its complete 16,384-byte readback matched that image byte for byte. The fresh hardware boot test is now the remaining acceptance step.
 
 ## The Subscriber Lesson
 

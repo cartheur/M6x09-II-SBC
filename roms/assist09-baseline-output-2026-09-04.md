@@ -2,7 +2,7 @@
 
 Date: 2026-09-04
 
-Status: the previously programmed candidate is superseded by a host-verified ACIA register-map correction; new-hardware acceptance pending.
+Status: the ACIA register-map-corrected candidate has passed full-device readback; board boot and serial acceptance pending.
 
 This record began as the first output of the M6x09-II-SBC ROM workflow. The original baseline exposed an ACIA register-selection and status-polling defect in the emulator, so the current preserved image is an ACIA-corrected candidate rather than the original untested baseline.
 
@@ -36,9 +36,9 @@ scripts/verify-assist09-image.sh
 
 ## Hardware Acceptance Gate
 
-The corrected candidate has passed the programmer readback check, but board boot and serial acceptance remain pending.
+The corrected candidate was programmed and passed the complete programmer-readback check below, but board boot and serial acceptance remain pending.
 
-## Programmer Readback Record
+## Earlier Programmer Readback Record
 
 Date: 2026-09-28
 
@@ -51,7 +51,19 @@ The earlier 16 KiB candidate was programmed using the Windows host. A full-devic
 | Readback SHA-256 | `1d7fdbe412c8e57084b99b981a24c8fbdbc013227a6da04b1810c67054aa2d72` |
 | Current register-map-corrected image checksum | `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843` (does not match; expected) |
 
-`readback.txt` was renamed to `readback.bin`; it is raw binary data, not a text log.
+`readback.txt` was renamed to `readback.bin`; it is raw binary data, not a text log. That filename now holds the later corrected-candidate readback recorded below; the values in this section are retained as historical evidence of the earlier burn.
+
+## Corrected-Candidate Programmer Readback
+
+Date/time: 2026-09-28 19:03
+
+The corrected 16 KiB image was programmed and read back in full as [readback.bin](readback.bin). It matches the current `assist09-27c128.bin` byte for byte.
+
+| Check | Result |
+| --- | --- |
+| Readback size | 16,384 bytes |
+| Readback SHA-256 | `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843` |
+| Comparison with current programmer image | Identical (byte for byte) |
 
 ## First Boot Attempt
 
@@ -110,7 +122,7 @@ The next source change swaps those register offsets in `CIDTA`, `COON`, and `COD
 | Read transmit status | 1 | 0 |
 | Write transmit data | 0 | 1 |
 
-The source repair has now been applied, including the matching emulator model and regression tests. It preserves the 2,048-byte monitor size. The new 16 KiB image has SHA-256 `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`; it passes `make -C emulator test`, `scripts/verify-assist09-image.sh`, and its checksum check. It differs in six bytes from `readback.bin`, as expected. The existing EPROM readback remains valid evidence of what was programmed, but it is not the final working monitor image and must not be used as the new burn candidate.
+The source repair has now been applied, including the matching emulator model and regression tests. It preserves the 2,048-byte monitor size. The new 16 KiB image has SHA-256 `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`; it passes `make -C emulator test`, `scripts/verify-assist09-image.sh`, and its checksum check. It differed in six bytes from the earlier readback, as expected, and the corrected candidate's full readback now matches it exactly.
 
 Complete and record these remaining observations on the target board:
 

@@ -2,7 +2,7 @@
 
 Date: 2026-09-28
 
-Status: source repair implemented and host-verified; new EPROM candidate not yet programmed or hardware accepted.
+Status: source repair implemented, programmed, and full-device-readback verified; board boot and serial acceptance pending.
 
 ## Issue
 
@@ -86,6 +86,10 @@ scripts/verify-assist09-image.sh
 (cd roms && sha256sum -c assist09-27c128.bin.sha256)
 ```
 
+## Programming And Readback Result
+
+At 19:03 on 2026-09-28, the repaired candidate was programmed and a complete 16,384-byte device readback was saved as `roms/readback.bin`. Its SHA-256 is `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`, identical byte for byte to `roms/assist09-27c128.bin`. This verifies the burn; it does not yet verify execution on the board.
+
 ## Next Hardware Step
 
-Program `roms/assist09-27c128.bin` into an EPROM and preserve a complete device readback. Confirm that its SHA-256 is `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`, then install it and test for the ASSIST09 banner at `115200,n,8,1`, no handshake. A correct TX waveform should have a bit time of approximately 8.68 us.
+Install the verified EPROM if it is not already installed, then reset the board and test for the ASSIST09 banner and `>` prompt at `115200,n,8,1`, no handshake. A correct TX waveform should have a bit time of approximately 8.68 us.
