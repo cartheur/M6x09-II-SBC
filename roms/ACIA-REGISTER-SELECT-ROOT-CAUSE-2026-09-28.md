@@ -2,7 +2,7 @@
 
 Date: 2026-09-28
 
-Status: source repair implemented, programmed, and full-device-readback verified; board boot and serial acceptance pending.
+Status: source repair implemented, programmed, and full-device-readback verified. Post-repair measurement shows active `RS` but idle `TXDATA`; board boot and serial acceptance remain pending while CTS is investigated.
 
 ## Issue
 
@@ -90,6 +90,16 @@ scripts/verify-assist09-image.sh
 
 At 19:03 on 2026-09-28, the repaired candidate was programmed and a complete 16,384-byte device readback was saved as `roms/readback.bin`. Its SHA-256 is `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`, identical byte for byte to `roms/assist09-27c128.bin`. This verifies the burn; it does not yet verify execution on the board.
 
+## Post-Repair Scope Result
+
+With the corrected EPROM installed, Tcl still received no banner or prompt at `115200,n,8,1`, no handshake. The following checks preserve the distinction between an electrical observation and a source conclusion:
+
+- Power-off continuity confirms H2 pin 2 (`A0`) to U1 pin 11 (`RS`); U1 pin 11 has no continuity to adjacent U1 pin 12 (`VCC`).
+- `same-acia.jpg` puts both AD2 scope channels on U1 pin 11 with a shared ground. Both channels show the same active `RS` signal, resolving an earlier probe/ground-contact mismatch.
+- `split-acia.jpg` uses C1 on U1 pin 11 (`RS`) and C2 on U1 pin 6 (`TXDATA`) at 100 us/div after reset. `RS` is active, while `TXDATA` remains idle high.
+
+The ACIA is therefore being addressed, but transmission is not becoming ready. The immediate next hypothesis is U1 pin 23 (`CTS`): the MC6850 data sheet states that high CTS inhibits `TDRE`, exactly the status bit the monitor polls before writing TX data. No further source change is justified until CTS is measured.
+
 ## Next Hardware Step
 
-Install the verified EPROM if it is not already installed, then reset the board and test for the ASSIST09 banner and `>` prompt at `115200,n,8,1`, no handshake. A correct TX waveform should have a bit time of approximately 8.68 us.
+Measure U1 pin 23 (`CTS`) relative to board ground. It must be low (near 0 V) for `TDRE` to assert; a level near the 4.5 V supply would explain the idle TX line. Optionally observe U1 pin 5 (`RTS`) at the same time. Keep the corrected ROM installed and make no source change before recording that result.

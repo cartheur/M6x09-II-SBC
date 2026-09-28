@@ -67,6 +67,8 @@ Suggested figures:
 
 The next chapter became a deliberately small source repair: Control/Status now uses offset 0; Data now uses offset 1. The matching emulator model was repaired too, and the rebuilt candidate passed its host checks. Its 16 KiB image SHA-256 is `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`. The corrected EPROM was programmed, and its complete 16,384-byte readback matched that image byte for byte. The fresh hardware boot test is now the remaining acceptance step.
 
+That fresh test added one more disciplined stop. A same-pin, shared-ground scope check proved that U1 pin 11 (`RS`) really was active, and continuity proved it follows CPU A0. A split capture then showed active `RS` but idle U1 pin 6 (`TXDATA`). The next question is not another code revision: measure U1 pin 23 (`CTS`). On this ACIA, high CTS prevents transmit-ready from asserting, which would make the monitor wait forever before sending a character.
+
 ## The Subscriber Lesson
 
 An agent can make an honest mistake that looks plausible in source code and even passes a model built around the same mistaken assumption. That does not transfer responsibility for diagnosis or acceptance away from the developer. The data sheet, schematic, scope, logic analyzer, readback, and board all remain part of the developer's review loop. Use an agent as a fast collaborator; do not treat it as the final authority on what the hardware is doing.
