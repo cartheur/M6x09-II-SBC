@@ -14,11 +14,11 @@ all: $(EMU)
 $(BUILD):
 	mkdir -p $@
 
-$(EMU): src/main.c src/machine.c src/machine.h | $(BUILD)
-	$(CC) $(CPPFLAGS) $(CFLAGS) src/main.c src/machine.c -o $@
+$(EMU): src/main.c src/machine.c src/machine.h src/cpu6809.c src/cpu6809.h | $(BUILD)
+	$(CC) $(CPPFLAGS) $(CFLAGS) src/main.c src/machine.c src/cpu6809.c -o $@
 
-$(TEST): tests/test_machine.c src/machine.c src/machine.h | $(BUILD)
-	$(CC) $(CPPFLAGS) $(CFLAGS) tests/test_machine.c src/machine.c -o $@
+$(TEST): tests/test_machine.c src/machine.c src/machine.h src/cpu6809.c src/cpu6809.h | $(BUILD)
+	$(CC) $(CPPFLAGS) $(CFLAGS) tests/test_machine.c src/machine.c src/cpu6809.c -o $@
 
 run: $(EMU)
 	$(EMU) --rom $(ROM)

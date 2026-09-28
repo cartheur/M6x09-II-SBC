@@ -1,4 +1,4 @@
-#include "machine.h"
+#include "cpu6809.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -11,6 +11,7 @@ static void usage(const char *program)
 int main(int argc, char **argv)
 {
     M6x09Machine machine;
+    M6x09Cpu6809 cpu;
     const char *rom_path = NULL;
 
     if (argc == 3 && strcmp(argv[1], "--rom") == 0) {
@@ -27,6 +28,7 @@ int main(int argc, char **argv)
     }
 
     m6x09_reset(&machine);
+    m6x09_cpu6809_reset(&cpu, &machine);
     printf("ROM loaded: %s (16 KiB)\n", rom_path);
     printf("reset reads: $FFFE=$%02X $FFFF=$%02X\n",
            m6x09_read(&machine, M6X09_RESET_VECTOR),
@@ -35,6 +37,7 @@ int main(int argc, char **argv)
     printf("ACIA status: $%02X (TDRE=%u RDRF=%u)\n", machine.acia.status,
            (machine.acia.status & M6X09_ACIA_TDRE) != 0,
            (machine.acia.status & M6X09_ACIA_RDRF) != 0);
-    printf("CPU instruction execution is not implemented yet.\n");
+    printf("first opcode: $%02X at $%04X\n", m6x09_read(&machine, cpu.pc), cpu.pc);
+    printf("CPU reset-path instruction subset is available; monitor SWI is not implemented yet.\n");
     return 0;
 }
