@@ -30,7 +30,7 @@ Recommended settings in the terminal window:
 - Hand Shake: `none`
 - Pause(ms): `2`
 
-The script is tuned for prompt-driven, line-paced uploads. It waits for a carriage return before sending the next line, which matches the repo note that uploads need pacing because there is no hardware handshaking.
+The script uses character pacing because there is no hardware handshaking. Ordinary text uploads are prompt-driven and line-paced. Motorola S-record uploads are sent as a paced continuous stream because ASSIST09 deliberately suppresses carriage-return echo while its loader is active.
 
 `115200` is the expected initial rate for the corrected ASSIST09 candidate: the schematic connects the 6850's receive and transmit clocks to the 6809 `E` clock, and the candidate selects the ACIA divide-by-16 mode with control byte `$51`. With the board's 7.3728 MHz oscillator, that implies 115200 baud. The earlier 19200 setting applies only to the pre-correction bring-up attempt and is retained as historical evidence.
 
@@ -105,11 +105,11 @@ For the ASSIST09 build and ROM acceptance sequence, see [roms/README.md](../roms
 
 ## Sending Files
 
-Use `File -> Send...` in the Tcl terminal to send text or S-record files line by line. The script's send path is intentionally conservative:
+Use `File -> Send...` in the Tcl terminal to send text or S-record files. The script's send path is intentionally conservative:
 
 - characters are sent one at a time
 - a CR is appended at end of line
-- the next line waits for a CR response
+- ordinary text files wait for a CR response before the next line; S-record files do not, because ASSIST09 suppresses that response while loading
 
 If uploads stall:
 

@@ -98,8 +98,8 @@ With the corrected EPROM installed, Tcl still received no banner or prompt at `1
 - `same-acia.jpg` puts both AD2 scope channels on U1 pin 11 with a shared ground. Both channels show the same active `RS` signal, resolving an earlier probe/ground-contact mismatch.
 - `split-acia.jpg` uses C1 on U1 pin 11 (`RS`) and C2 on U1 pin 6 (`TXDATA`) at 100 us/div after reset. `RS` is active, while `TXDATA` remains idle high.
 
-The ACIA is therefore being addressed, but transmission is not becoming ready. The immediate next hypothesis is U1 pin 23 (`CTS`): the MC6850 data sheet states that high CTS inhibits `TDRE`, exactly the status bit the monitor polls before writing TX data. No further source change is justified until CTS is measured.
+The ACIA is therefore being addressed, but transmission is not becoming ready. The immediate next hypothesis is U1 pin 24 (`CTS`): the MC6850 data sheet states that high CTS inhibits `TDRE`, exactly the status bit the monitor polls before writing TX data. U1 pin 23 is DCD.
 
 ## Next Hardware Step
 
-Measure U1 pin 23 (`CTS`) relative to board ground. It must be low (near 0 V) for `TDRE` to assert; a level near the 4.5 V supply would explain the idle TX line. Optionally observe U1 pin 5 (`RTS`) at the same time. Keep the corrected ROM installed and make no source change before recording that result.
+Measure U1 pin 24 (`CTS`) relative to board ground. It must be low (near 0 V) for `TDRE` to assert; a level near the 4.5 V supply would explain the idle TX line. Optionally observe U1 pin 5 (`RTS`) at the same time. Keep the corrected ROM installed and make no source change before recording that result.

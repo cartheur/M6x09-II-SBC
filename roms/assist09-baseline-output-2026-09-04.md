@@ -138,7 +138,7 @@ Only after those observations are recorded should a copied ROM image, checksum f
 
 The corrected EPROM has now been programmed and verified by complete readback, but the terminal still receives no banner or prompt. A misleading initial scope comparison was resolved by a shared-ground, same-pin check: both AD2 channels on U1 pin 11 (`RS`) show the same active waveform ([same-acia.jpg](../images/same-acia.jpg)). Power-off continuity also confirms H2 pin 2 (`A0`) to U1 pin 11, with no continuity from U1 pin 11 to VCC on U1 pin 12.
 
-The subsequent split capture ([split-acia.jpg](../images/split-acia.jpg)) places C1 on U1 pin 11 (`RS`) and C2 on U1 pin 6 (`TXDATA`). After reset, `RS` is active but `TXDATA` remains idle high. The next session must measure U1 pin 23 (`CTS`) relative to ground: high CTS inhibits the ACIA `TDRE` bit and would make the monitor's transmit polling loop wait indefinitely. Do not change source until that measurement is recorded.
+The subsequent split capture ([split-acia.jpg](../images/split-acia.jpg)) places C1 on U1 pin 11 (`RS`) and C2 on U1 pin 6 (`TXDATA`). After reset, `RS` is active but `TXDATA` remains idle high. The next session must measure U1 pin 24 (`CTS`) relative to ground: high CTS inhibits the ACIA `TDRE` bit and would make the monitor's transmit polling loop wait indefinitely. U1 pin 23 is DCD.
 
 ## Episode 10 Shadow
 

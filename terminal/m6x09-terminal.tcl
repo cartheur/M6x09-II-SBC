@@ -648,13 +648,39 @@ proc sendFile {} {
 			   -title "Open file to send"]
     if {[string length $::sendFileName] > 0} {
 	set fp [open $::sendFileName "r"]
+	set lines {}
 	while {[gets $fp line] >= 0} {
-            if [catch {smartSend::sendLine $line} result] {
-                puts "sendLine failed: $result"
-                break
-            }
-        }
+	    lappend lines $line
+	}
 	close $fp
+
+	# ASSIST09 suppresses CR/echo while its S-record loader is active.
+	# Ordinary prompt-driven uploads can wait for CR after every line, but
+	# doing that for an S-record stream deadlocks after its first record.
+	set isSRecord 1
+	foreach line $lines {
+	    if {[string length $line] > 0 && ![string match "S*" $line]} {
+		set isSRecord 0
+		break
+	    }
+	}
+	if {$isSRecord} {
+	    foreach line $lines {
+		foreach character [split $line {}] {
+		    serialPort::send $character
+		    after $::smartSend::pauseBetweenChar
+		}
+		serialPort::send "\r"
+	    }
+	    return
+	}
+
+	foreach line $lines {
+	    if [catch {smartSend::sendLine $line} result] {
+		puts "sendLine failed: $result"
+		break
+	    }
+	}
     }
 }; # end sendFile
 
