@@ -630,11 +630,44 @@ bind $handShakeEntry <Leave> { uiTooltip::hide }
 bind $handShakeEntry <FocusOut> { uiTooltip::hide }
 bind $handShakeEntry <ButtonPress> { uiTooltip::hide }
 
+namespace eval interactiveSend {
+    # Direct typing in the scrollback window must be paced too. The monitor
+    # polls its ACIA, so immediate GUI key-event writes can lose characters.
+    variable queue {}
+    variable active 0
+
+    proc enqueue { character } {
+        variable queue
+        variable active
+        if {[string length $character] == 0} {
+            return
+        }
+        lappend queue $character
+        if {!$active} {
+            set active 1
+            after 0 [namespace code drain]
+        }
+    }
+
+    proc drain {} {
+        variable queue
+        variable active
+        if {[llength $queue] == 0} {
+            set active 0
+            return
+        }
+        set character [lindex $queue 0]
+        set queue [lrange $queue 1 end]
+        serialPort::send $character
+        after $::smartSend::pauseBetweenChar [namespace code drain]
+    }
+}
+
 proc sendTextChar { character } {
     # We use this function in the key-binding for the logText widget.
     # The break is to stop the default binding from inserting another
     # character into the widget.
-    serialPort::send $character
+    interactiveSend::enqueue $character
     return -code break
 }
 
@@ -719,6 +752,8 @@ proc sendTextBuffer {} {
 # The following binding redirects key presses in the text widget
 # to the serial-port.
 bind $logText::textWidget <Any-Key> [list sendTextChar %A]
+bind $logText::textWidget <Return> { sendTextChar "\r" }
+bind $logText::textWidget <KP_Enter> { sendTextChar "\r" }
 
 # The following virtual event can be triggered with Control-Shift-v
 # or with clicking the middle mouse button in X-Windows.
@@ -809,5 +844,5 @@ smartSend::resetFlags
 # set serialPort::handShake none
 # set serialPort::handShake rtscts
 # set serialPort::name {\\.\com5}
-set smartSend::pauseBetweenChar 2
+set smartSend::pauseBetweenChar 5
 serialPort::start

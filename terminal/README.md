@@ -28,9 +28,9 @@ Recommended settings in the terminal window:
 - Speed: `115200`
 - ParityAndBits: `n,8,1`
 - Hand Shake: `none`
-- Pause(ms): `2`
+- Pause(ms): `5`
 
-The script uses character pacing because there is no hardware handshaking. Ordinary text uploads are prompt-driven and line-paced. Motorola S-record uploads are sent as a paced continuous stream because ASSIST09 deliberately suppresses carriage-return echo while its loader is active.
+The script uses 5 ms character pacing because there is no hardware handshaking and ASSIST09 polls its ACIA. This applies to direct keyboard input as well as uploads. Ordinary text uploads are prompt-driven and line-paced. Motorola S-record uploads are sent as a paced continuous stream because ASSIST09 deliberately suppresses carriage-return echo while its loader is active.
 
 `115200` is the expected initial rate for the corrected ASSIST09 candidate: the schematic connects the 6850's receive and transmit clocks to the 6809 `E` clock, and the candidate selects the ACIA divide-by-16 mode with control byte `$11`. With the board's 7.3728 MHz oscillator, that implies 115200 baud. The earlier 19200 setting applies only to the pre-correction bring-up attempt and is retained as historical evidence.
 
@@ -114,7 +114,7 @@ Use `File -> Send...` in the Tcl terminal to send text or S-record files. The sc
 If uploads stall:
 
 - keep `Hand Shake` on `none`
-- increase `Pause(ms)` from `2` to `5` or `10`
+- increase `Pause(ms)` from `5` to `10` or `20`
 - restart the serial port from the menu
 - tap `Send CR` to recover the prompt
 
