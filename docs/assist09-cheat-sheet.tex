@@ -1,0 +1,117 @@
+\documentclass[9pt,a4paper]{article}
+\usepackage[margin=10mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\renewcommand{\arraystretch}{1.06}
+\titlespacing*{\section}{0pt}{5pt}{2pt}
+
+\newcommand{\cmd}[1]{\texttt{#1}}
+\newcommand{\hex}[1]{\texttt{\$#1}}
+
+\begin{document}
+\pagestyle{empty}
+
+{\LARGE\bfseries ASSIST09 Cheat Sheet}\\[-1pt]
+\textit{M6x09-II SBC --- verified monitor workflow}\hfill\texttt{115200,n,8,1; no handshake}
+
+\vspace{4pt}
+\hrule
+\vspace{5pt}
+
+\textbf{Start here}\quad Reset the board.  A working monitor prints:
+
+\begin{center}
+\begin{minipage}{0.42\linewidth}
+\ttfamily
+ASSIST09\\
+>
+\end{minipage}
+\end{center}
+
+Commands and numeric values are hexadecimal.  Type a command in the terminal's \emph{bottom command-entry field}, then press Enter.  Direct typing is also paced, but the command-entry field is the preferred path.
+
+\section*{Daily monitor commands}
+
+\begin{tabularx}{\linewidth}{@{}>{\ttfamily}p{30mm}X@{}}
+\toprule
+\normalfont\textbf{Command} & \textbf{Action} \\
+\midrule
+\cmd{R} & Display/change the saved CPU registers. \\
+\cmd{D 1000 20} & Display \hex{20} bytes of memory beginning at \hex{1000}. \\
+\cmd{M 1000} & Examine/change memory interactively at \hex{1000}. \\
+\cmd{/} & Continue examining memory from the last memory address. \\
+\cmd{L} & Enter S-record load mode. \\
+\cmd{G 1000} & Start execution at \hex{1000}. \\
+\cmd{C 1000} & Call the routine at \hex{1000} as a subroutine. \\
+\cmd{B} & List breakpoints. \\
+\cmd{B 1000} & Add a breakpoint at \hex{1000}. \\
+\cmd{B -1000} & Remove the breakpoint at \hex{1000}. \\
+\cmd{B -} & Clear all breakpoints. \\
+\bottomrule
+\end{tabularx}
+
+\section*{Verified RAM load and run}
+
+\begin{enumerate}[leftmargin=6mm,itemsep=1pt,topsep=1pt]
+  \item At \cmd{>}, enter \cmd{L}.  The prompt does \emph{not} return while the loader is waiting.
+  \item In the Tcl terminal, choose \textbf{File $\rightarrow$ Send\ldots} and select \cmd{src/assist-09/assist09-smoke.s19}.
+  \item Wait for \cmd{>} to return, then enter \cmd{G 1000}.
+\end{enumerate}
+
+Expected result:
+
+\begin{center}
+\begin{minipage}{0.72\linewidth}
+\ttfamily
+ASSIST09 RAM SMOKE TEST PASSED\\
+ASSIST09\\
+>
+\end{minipage}
+\end{center}
+
+\textbf{Important:} use the repository Tcl terminal.  It sends S-records with character pacing and terminates an ASSIST09 load using only \cmd{S9}; sending the remaining bytes of a normal \cmd{S9030000FC} record would become the next monitor input.
+
+\section*{Other built-in commands}
+
+\begin{tabularx}{\linewidth}{@{}>{\ttfamily}p{28mm}X@{\qquad}>{\ttfamily}p{19mm}X@{}}
+\toprule
+\normalfont\textbf{Cmd} & \textbf{Action} & \normalfont\textbf{Cmd} & \textbf{Action} \\
+\midrule
+\cmd{P start end} & Punch memory as S-records. & \cmd{V} & Verify incoming S-records against memory. \\
+\cmd{T count} & Trace instructions. & \cmd{.} & Trace one instruction. \\
+\cmd{O from to} & Calculate 6809 branch offsets. & \cmd{W value} & Set the expression ``window'' value. \\
+\cmd{N value} & Set output padding/nulls. & \cmd{S value} & Set stack-trace level. \\
+\cmd{E \ldots} & Encode a 6809 indexed-addressing postbyte. & & \\
+\bottomrule
+\end{tabularx}
+
+\section*{Expressions and memory editing}
+
+ASSIST09 accepts hexadecimal values.  In expressions, \cmd{M} means the last memory address, \cmd{P} the saved program counter, \cmd{W} the window value, and \cmd{@} an indirect value.  In \cmd{M} mode, enter a hex byte to replace it; use a space for the next byte, \cmd{\^{}} for the previous byte, and \cmd{/} to show the address again.
+
+\section*{Board facts}
+
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Monitor ROM & \hex{F800}--\hex{FFFF}; reset vector \hex{F837}. \\
+ACIA & \hex{BE00} Control/Status; \hex{BE01} Data. \\
+Serial setup & MC6850 control \hex{11}: 8N1, divide-by-16, RTS low, TX interrupt disabled. \\
+Flow control & PCB locally connects RTS to CTS.  Do \emph{not} install a CTS-to-ground jumper. \\
+\bottomrule
+\end{tabularx}
+
+\vfill
+\footnotesize
+Source: \texttt{src/assist-09/assist09.asm}; operational notes: \texttt{terminal/README.md}.  Advanced breakpoint, trace, punch, verify, and encode commands are present in the monitor; the load/run workflow above is the board-level accepted path.
+
+\end{document}
