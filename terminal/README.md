@@ -110,6 +110,7 @@ Use `File -> Send...` in the Tcl terminal to send text or S-record files. The sc
 - characters are sent one at a time
 - a CR is appended at end of line
 - ordinary text files wait for a CR response before the next line; S-record files do not, because ASSIST09 suppresses that response while loading
+- ASSIST09 S-record uploads send only `S9` for the terminating record, without a CR: its loader returns as soon as it reads that record type and otherwise leaves the remaining standard terminator bytes as monitor input
 
 If uploads stall:
 

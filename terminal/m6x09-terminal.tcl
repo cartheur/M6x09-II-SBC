@@ -699,11 +699,21 @@ proc sendFile {} {
 	}
 	if {$isSRecord} {
 	    foreach line $lines {
+		# ASSIST09 stops as soon as it reads the S9 record type.  It
+		# does not consume the count, address, checksum, or CR from a
+		# standard S9030000FC terminator; sending those bytes makes
+		# them the first characters of the next monitor command.
+		set isAssist09End [string match "S9*" $line]
+		if {$isAssist09End} {
+		    set line "S9"
+		}
 		foreach character [split $line {}] {
 		    serialPort::send $character
 		    after $::smartSend::pauseBetweenChar
 		}
-		serialPort::send "\r"
+		if {!$isAssist09End} {
+		    serialPort::send "\r"
+		}
 	    }
 	    return
 	}
