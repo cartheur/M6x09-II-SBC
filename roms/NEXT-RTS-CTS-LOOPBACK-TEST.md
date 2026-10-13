@@ -1,4 +1,4 @@
-# Next Test: RTS/CTS Loopback Candidate
+# RTS/CTS Loopback Hardware Acceptance
 
 Date: 2026-10-13
 
@@ -28,7 +28,26 @@ make -C emulator test
 scripts/verify-assist09-image.sh
 ```
 
-## Board Procedure
+## Board Result
+
+The full-device programmer readback matched the candidate SHA-256 byte for byte. With no CTS-to-ground jumper installed, the board booted to:
+
+```text
+ASSIST09
+>
+```
+
+The smoke S-record then loaded and executed successfully:
+
+```text
+ASSIST09 RAM SMOKE TEST PASSED
+ASSIST09
+>
+```
+
+This is the final no-jumper acceptance result. The earlier failed S-record attempt was caused by sending `L` outside the terminal's paced command-entry field; it did not alter the ROM or acceptance result.
+
+## Reproduction Procedure
 
 1. Keep the board powered off and leave the temporary CTS-to-ground jumper removed.
 2. Program this full 16 KiB candidate, then perform a complete programmer readback and compare it to the stated SHA-256.

@@ -2,7 +2,7 @@
 
 Date: 2026-10-13
 
-The earlier corrected `roms/assist09-27c128.bin` image, SHA-256 `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`, passed the serial/load/RAM smoke path only while a temporary CTS-to-ground jumper was installed. This record is superseded as final hardware acceptance by the RTS/CTS loopback correction.
+The earlier corrected `roms/assist09-27c128.bin` image, SHA-256 `37ece487da6b49c7d9f24deb34d25598983782a9ff958558f39a1dff2e5cc843`, passed the serial/load/RAM smoke path only while a temporary CTS-to-ground jumper was installed. The final no-jumper acceptance is the RTS/CTS loopback candidate documented in [NEXT-RTS-CTS-LOOPBACK-TEST.md](NEXT-RTS-CTS-LOOPBACK-TEST.md).
 
 ## Preconditions
 

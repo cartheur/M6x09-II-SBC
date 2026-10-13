@@ -2,7 +2,7 @@
 
 Date: 2026-10-13
 
-Status: superseded. The temporary CTS-to-ground jumper produced a successful smoke test, but subsequent EasyEDA PCB evidence shows CTS is intentionally tied to RTS. Do not add a CTS pull-down or retain the jumper. The next candidate changes the ACIA control byte to drive RTS low.
+Status: complete. The temporary CTS-to-ground jumper produced a successful smoke test, but subsequent EasyEDA PCB evidence showed CTS is intentionally tied to RTS. The final `$11` RTS-low candidate booted and passed the smoke test with no jumper. Do not add a CTS pull-down.
 
 ## Established Evidence
 
@@ -32,6 +32,6 @@ This proved the ROM, serial, load, RAM, and execution path but not the final RTS
 
 The prior `$51` control byte has transmitter-control bits `CR6=1, CR5=0`, which drive RTS high. The local CTS↔RTS link therefore inhibits `TDRE`. The new candidate uses `$11`, preserving 8N1 and the divide-by-16 rate while selecting `CR6=0, CR5=0`: RTS low and transmitter interrupt disabled.
 
-Program and full-readback verify the new candidate, with no CTS jumper installed. Then repeat boot and the RAM smoke test.
+The `$11` candidate was programmed, full-readback verified, booted, and passed the RAM smoke test with no CTS jumper installed. See [NEXT-RTS-CTS-LOOPBACK-TEST.md](NEXT-RTS-CTS-LOOPBACK-TEST.md) for the final record.
 
 Preserve the CTS capture and retain the temporary jumper until the permanent remedy has been installed and repeat-tested.
