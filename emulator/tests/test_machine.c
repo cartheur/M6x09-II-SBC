@@ -102,7 +102,7 @@ static void test_assist09_acia_initialization_and_polling(const char *rom_path)
     cpu.pc = 0xfae7;
     step_count(&cpu, &machine, 5);
     assert(cpu.pc == 0xfaf1);
-    assert(machine.acia.control == 0x51);
+    assert(machine.acia.control == 0x11);
     assert(machine.acia.transmit_count == 0);
     assert(machine.acia.status == M6X09_ACIA_TDRE);
 

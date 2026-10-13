@@ -32,7 +32,7 @@ Recommended settings in the terminal window:
 
 The script uses character pacing because there is no hardware handshaking. Ordinary text uploads are prompt-driven and line-paced. Motorola S-record uploads are sent as a paced continuous stream because ASSIST09 deliberately suppresses carriage-return echo while its loader is active.
 
-`115200` is the expected initial rate for the corrected ASSIST09 candidate: the schematic connects the 6850's receive and transmit clocks to the 6809 `E` clock, and the candidate selects the ACIA divide-by-16 mode with control byte `$51`. With the board's 7.3728 MHz oscillator, that implies 115200 baud. The earlier 19200 setting applies only to the pre-correction bring-up attempt and is retained as historical evidence.
+`115200` is the expected initial rate for the corrected ASSIST09 candidate: the schematic connects the 6850's receive and transmit clocks to the 6809 `E` clock, and the candidate selects the ACIA divide-by-16 mode with control byte `$11`. With the board's 7.3728 MHz oscillator, that implies 115200 baud. The earlier 19200 setting applies only to the pre-correction bring-up attempt and is retained as historical evidence.
 
 ## P1 Wiring
 
