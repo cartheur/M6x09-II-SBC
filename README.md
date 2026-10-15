@@ -66,5 +66,7 @@ _Parts list_
 
 15.01.2024: Beginning the final assembly of _alpha_, then will continue to the assembly of _gamma_. Printed labels affixed to each.
 
-26.09.2026: Actively debugging the board. A few stupid errors found so creatig an emulator to check the worst-cases before burning ROM. 
+26.09.2026: Actively debugging the board. Tracing errors with the assistence of Codex in VSCode to validate the authority of such an approach and reveal its helpful (or not) aspects. The idea is to check the necessary software changes I am assuming is the matter before burning another ROM.
+
+13.10.2026: Sucess! The board is functioning according to its design. Will desribe this in [file](/reflection/episode-13-assist09-bring-up-reflection.md) in this repo and encapsulate into a podcast.
 
